@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Luminous Ledger - Customers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-tertiary": "#67001b",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "surface-dim": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "on-error": "#690005",
+                        "background": "#131313",
+                        "on-primary-container": "#0d0096",
+                        "tertiary-container": "#ff516a",
+                        "on-tertiary-container": "#5b0017",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#92002a",
+                        "tertiary-fixed": "#ffdadb",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "outline": "#908fa0",
+                        "primary-fixed": "#e1e0ff",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed": "#07006c",
+                        "surface-bright": "#3a3939",
+                        "secondary": "#4edea3",
+                        "on-secondary": "#003824",
+                        "surface-container-highest": "#353534",
+                        "primary-container": "#8083ff",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface-variant": "#c7c4d7",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-secondary-fixed": "#002113",
+                        "primary": "#c0c1ff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "secondary-container": "#00a572",
+                        "surface-variant": "#353534",
+                        "inverse-primary": "#494bd6",
+                        "on-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "tertiary": "#ffb2b7",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-primary": "#1000a9",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#c0c1ff",
+                        "on-background": "#e5e2e1",
+                        "on-secondary-container": "#00311f",
+                        "outline-variant": "#464554",
+                        "on-tertiary-fixed": "#40000d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "lg": "24px",
+                        "margin-desktop": "32px",
+                        "md": "16px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(23, 23, 23, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(38, 38, 38, 0.5);
+        }
+        .glow-primary {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+        .list-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 bg-background border-b border-surface-variant flex justify-between items-center px-margin-mobile w-full h-16">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden">
+<img alt="Store Logo" class="w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_dCB6qt-1BO10xQ7pa1sJXL8Y9rDYxtakF4dEsAoseTqxhk_kSntZMfcgCD6ArUvU1zruWpttgngtuhCCQf5Gzf8VnH_YStLNOIKfSDA3YlU2eUaMsLSMZ_C8eBAe4vqe4rBcnPVUPiSGcMYS0tXTOqyrZEQJXuaH_U8ADKv8TuLjbdLPdoTfq8L-BsSXinam6H85XmAQWOv_kDB3RJgWUtKr8sj_VW-339NivqGNGoABmboI_mGb_51skwtIv2i5fY3TfClc3bBN"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">My Khata</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary" data-icon="search">search</span>
+</button>
+</header>
+<main class="px-margin-mobile pt-lg max-w-2xl mx-auto space-y-lg">
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+</div>
+<input class="w-full h-12 pl-12 pr-4 rounded-xl bg-surface-container-low border-none focus:ring-1 focus:ring-primary text-body-md placeholder:text-on-surface-variant transition-all glow-primary" placeholder="Search customers..." type="text"/>
+</div>
+<!-- Total Receivable Summary (Bento-style Card) -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="glass-card rounded-2xl p-lg flex flex-col justify-between h-40 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
+<div>
+<span class="text-label-md text-on-surface-variant uppercase tracking-wider">Total Receivable</span>
+<h2 class="text-headline-lg-mobile font-headline-lg-mobile text-primary mt-xs">₹ 48,250.00</h2>
+</div>
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+<span class="text-label-md">12% more than last month</span>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-lg flex flex-col justify-between h-40 border-l-4 border-l-tertiary-container">
+<div>
+<span class="text-label-md text-on-surface-variant uppercase tracking-wider">Overdue Accounts</span>
+<h2 class="text-headline-lg-mobile font-headline-lg-mobile text-tertiary mt-xs">03</h2>
+</div>
+<button class="text-label-lg font-label-lg text-primary flex items-center gap-xs hover:underline decoration-primary/30">
+                    Review Actions
+                    <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Customer List -->
+<section class="space-y-sm">
+<div class="flex justify-between items-center px-xs">
+<h3 class="text-label-lg text-on-surface-variant">Active Customers</h3>
+<button class="text-label-md text-primary font-semibold">View All</button>
+</div>
+<!-- Customer Cards -->
+<div class="space-y-md">
+<!-- Ankit Kumar (Overdue) -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md list-transition hover:translate-x-1 active:scale-[0.98] cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-primary shrink-0 border border-outline-variant">
+                        AK
+                    </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-sm text-headline-sm truncate">Ankit Kumar</h4>
+<span class="text-headline-sm font-bold text-tertiary-container">- ₹ 12,400</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<p class="text-label-md text-on-surface-variant">+91 98765 43210</p>
+<span class="px-2 py-0.5 rounded-full bg-error-container/20 text-error text-[10px] font-bold uppercase tracking-tighter border border-error-container/30">Overdue</span>
+</div>
+</div>
+</div>
+<!-- Rohan Sharma (Recent Credit) -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md list-transition hover:translate-x-1 active:scale-[0.98] cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-secondary shrink-0 border border-outline-variant">
+                        RS
+                    </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-sm text-headline-sm truncate">Rohan Sharma</h4>
+<span class="text-headline-sm font-bold text-secondary">+ ₹ 5,200</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<p class="text-label-md text-on-surface-variant">+91 91234 56789</p>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/10 text-secondary text-[10px] font-bold uppercase tracking-tighter border border-secondary-container/30">Recent Credit</span>
+</div>
+</div>
+</div>
+<!-- Meera Patel (Settled) -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md list-transition hover:translate-x-1 active:scale-[0.98] cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-on-surface-variant shrink-0 border border-outline-variant">
+                        MP
+                    </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-sm text-headline-sm truncate">Meera Patel</h4>
+<span class="text-headline-sm font-bold text-on-surface">₹ 0.00</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<p class="text-label-md text-on-surface-variant">+91 88888 77777</p>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase tracking-tighter border border-outline-variant">Settled</span>
+</div>
+</div>
+</div>
+<!-- John Doe (Recent Debit) -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md list-transition hover:translate-x-1 active:scale-[0.98] cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-primary shrink-0 border border-outline-variant">
+                        JD
+                    </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-sm text-headline-sm truncate">John Doe</h4>
+<span class="text-headline-sm font-bold text-on-primary-fixed-variant">- ₹ 2,150</span>
+</div>
+<div class="flex justify-between items-center mt-1">
+<p class="text-label-md text-on-surface-variant">+91 70000 12345</p>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/10 text-primary-fixed-dim text-[10px] font-bold uppercase tracking-tighter border border-primary-container/30">Recent Debit</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-on-primary shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:scale-110 active:scale-95 transition-all z-40 group" onclick="toggleBottomSheet(true)">
+<span class="material-symbols-outlined text-[32px] group-hover:rotate-90 transition-transform duration-300" data-icon="add">add</span>
+</button>
+<!-- Bottom Sheet Overlay -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity duration-300 opacity-0" id="overlay" onclick="toggleBottomSheet(false)"></div>
+<!-- Bottom Sheet: Add New Customer -->
+<div class="fixed bottom-0 left-0 right-0 max-w-2xl mx-auto glass-card rounded-t-[32px] z-[60] transform translate-y-full transition-transform duration-500 ease-out border-t border-white/10" id="bottomSheet">
+<div class="p-6">
+<div class="w-12 h-1 bg-surface-variant rounded-full mx-auto mb-8"></div>
+<div class="flex justify-between items-center mb-8">
+<h2 class="font-headline-md text-headline-md text-primary">Add New Customer</h2>
+<button class="text-on-surface-variant" onclick="toggleBottomSheet(false)">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="text-label-md text-on-surface-variant px-1">Customer Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary" data-icon="person">person</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl h-14 pl-12 focus:ring-2 focus:ring-primary transition-all text-body-lg" placeholder="Enter name" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-label-md text-on-surface-variant px-1">Mobile Number</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary" data-icon="call">call</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl h-14 pl-12 focus:ring-2 focus:ring-primary transition-all text-body-lg" placeholder="+91 00000 00000" type="tel"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-label-md text-on-surface-variant px-1">Opening Balance</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl h-14 px-4 focus:ring-2 focus:ring-primary transition-all text-body-lg" placeholder="0.00" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="text-label-md text-on-surface-variant px-1">Balance Type</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl h-14 px-4 focus:ring-2 focus:ring-primary transition-all text-body-lg appearance-none text-secondary">
+<option>Credit (To Collect)</option>
+<option>Debit (To Pay)</option>
+</select>
+</div>
+</div>
+<button class="w-full h-16 bg-primary text-on-primary rounded-2xl font-label-lg text-label-lg flex items-center justify-center gap-2 glow-primary active:scale-[0.98] transition-all mt-4" type="button">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                    Add Customer
+                </button>
+</form>
+</div>
+</div>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center py-xs px-base bg-surface-container shadow-lg border-t border-surface-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Suppliers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<script>
+        function toggleBottomSheet(show) {
+            const sheet = document.getElementById('bottomSheet');
+            const overlay = document.getElementById('overlay');
+            if (show) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.add('opacity-100');
+                    sheet.classList.remove('translate-y-full');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.remove('opacity-100');
+                sheet.classList.add('translate-y-full');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Add some atmospheric parallax or light effects
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    card.style.setProperty('--x', `${x}px`);
+                    card.style.setProperty('--y', `${y}px`);
+                    card.style.borderColor = 'rgba(99, 102, 241, 0.4)';
+                } else {
+                    card.style.borderColor = 'rgba(38, 38, 38, 0.5)';
+                }
+            });
+        });
+    </script>
+</body></html>

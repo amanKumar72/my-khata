@@ -1,0 +1,369 @@
+import React, { useState, useCallback } from 'react';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, SafeAreaView, RefreshControl, StyleSheet, Platform, StatusBar } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useApp } from '../../store/AppContext';
+import { supplierRepo } from '../../repositories/supplierRepo';
+import { Supplier } from '../../types';
+import { Button } from '../../components/Button';
+import { formatCurrency } from '../../utils/currency';
+import { formatDate } from '../../utils/date';
+import { Colors } from '../../constants/Colors';
+
+export default function SuppliersScreen() {
+  const router = useRouter();
+  const { theme, currency, selectedStoreId } = useApp();
+  const isDark = theme === 'dark';
+  const colors = isDark ? Colors.dark : Colors.light;
+
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [totalPayable, setTotalPayable] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchSuppliers = useCallback(async () => {
+    if (!selectedStoreId) return;
+    try {
+      setIsLoading(true);
+      let list: Supplier[] = [];
+      if (searchQuery.trim()) {
+        list = await supplierRepo.search(selectedStoreId, searchQuery.trim());
+      } else {
+        list = await supplierRepo.getAll(selectedStoreId);
+      }
+      setSuppliers(list);
+
+      // Sum all positive balances
+      const total = list
+        .filter(s => s.balance > 0)
+        .reduce((sum, s) => sum + s.balance, 0);
+      setTotalPayable(total);
+    } catch (e) {
+      console.error('Failed to load suppliers:', e);
+    } finally {
+      setIsLoading(false);
+      setRefreshing(false);
+    }
+  }, [selectedStoreId, searchQuery]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchSuppliers();
+    }, [fetchSuppliers])
+  );
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchSuppliers();
+  };
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Search & Header Bar */}
+      <View style={[styles.header, { backgroundColor: isDark ? '#131313' : '#ffffff', borderColor: colors.border }]}>
+        <View style={styles.headerTopRow}>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>
+            Suppliers Ledger
+          </Text>
+          <Button
+            title="+ Add Supplier"
+            onPress={() => router.push('/supplier/create')}
+            style={styles.addButton}
+          />
+        </View>
+
+        {/* Search Input */}
+        <View style={[styles.searchBox, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}>
+          <Text style={styles.searchIcon}>🔍</Text>
+          <TextInput
+            placeholder="Search Supplier by name..."
+            placeholderTextColor={isDark ? '#464554' : '#94a3b8'}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            style={[styles.searchInput, { color: colors.text }]}
+          />
+          {searchQuery ? (
+            <TouchableOpacity onPress={() => setSearchQuery('')} style={styles.clearBtn}>
+              <Text style={styles.clearBtnText}>✕</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </View>
+
+      {/* Aggregate Payable Banner */}
+      <View 
+        style={[
+          styles.summaryBanner, 
+          { 
+            backgroundColor: isDark ? 'rgba(103, 0, 27, 0.1)' : '#fee2e2', 
+            borderColor: isDark ? 'rgba(103, 0, 27, 0.2)' : '#fecaca' 
+          }
+        ]}
+      >
+        <View>
+          <Text style={[styles.bannerLabel, { color: colors.textMuted }]}>Total Payables</Text>
+          <Text style={[styles.bannerValue, { color: colors.error }]}>
+            {formatCurrency(totalPayable, currency)}
+          </Text>
+        </View>
+        <Text style={styles.bannerIcon}>📤</Text>
+      </View>
+
+      <ScrollView
+        style={styles.scrollList}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+        }
+      >
+        {suppliers.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyIcon}>📦</Text>
+            <Text style={[styles.emptyTitle, { color: colors.text }]}>No Suppliers Found</Text>
+            <Text style={[styles.emptySubtitle, { color: colors.textMuted }]}>
+              {searchQuery ? 'Try adjusting your search query.' : 'Keep track of stock purchases and payments. Create your first supplier ledger record.'}
+            </Text>
+            {!searchQuery && (
+              <Button
+                title="Create New Supplier"
+                onPress={() => router.push('/supplier/create')}
+              />
+            )}
+          </View>
+        ) : (
+          suppliers.map((s) => {
+            const weOweThem = s.balance > 0;
+            const theyOweUs = s.balance < 0;
+            const isSettled = s.balance === 0;
+            
+            return (
+              <TouchableOpacity
+                key={s.id}
+                activeOpacity={0.75}
+                onPress={() => router.push(`/supplier/${s.id}`)}
+                style={[
+                  styles.supplierItem,
+                  {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
+                  }
+                ]}
+              >
+                <View style={styles.itemLeft}>
+                  <View style={[styles.avatar, { backgroundColor: isDark ? '#2a2a2a' : '#f1f5f9' }]}>
+                    <Text style={[styles.avatarText, { color: colors.text }]}>
+                      {s.name.substring(0, 1).toUpperCase()}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={[styles.supplierName, { color: colors.text }]}>
+                      {s.name}
+                    </Text>
+                    {s.phone ? (
+                      <Text style={[styles.supplierPhone, { color: colors.textMuted }]}>
+                        📞 {s.phone}
+                      </Text>
+                    ) : null}
+                    <Text style={[styles.lastActiveText, { color: colors.textMuted }]}>
+                      Last Active: {s.last_transaction_date ? formatDate(s.last_transaction_date) : 'No transactions'}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Balance display */}
+                <View style={styles.itemRight}>
+                  {weOweThem && (
+                    <>
+                      <Text style={[styles.balanceValue, { color: colors.error }]}>
+                        {formatCurrency(s.balance, currency)}
+                      </Text>
+                      <Text style={[styles.balanceStatusCoral, { color: colors.error }]}>You will give</Text>
+                    </>
+                  )}
+                  {theyOweUs && (
+                    <>
+                      <Text style={[styles.balanceValue, styles.emeraldText]}>
+                        {formatCurrency(Math.abs(s.balance), currency)}
+                      </Text>
+                      <Text style={styles.balanceStatusEmerald}>You will get</Text>
+                    </>
+                  )}
+                  {isSettled && (
+                    <>
+                      <Text style={[styles.balanceValue, { color: colors.textMuted }]}>
+                        {formatCurrency(0, currency)}
+                      </Text>
+                      <Text style={[styles.balanceStatusMuted, { color: colors.textMuted }]}>Settled</Text>
+                    </>
+                  )}
+                </View>
+              </TouchableOpacity>
+            )
+          })
+        )}
+        <View style={styles.bottomGap} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  addButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+  },
+  searchBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    height: 44,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  searchIcon: {
+    fontSize: 14,
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 13,
+  },
+  clearBtn: {
+    padding: 4,
+  },
+  clearBtnText: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: '#908fa0',
+  },
+  summaryBanner: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+  },
+  bannerLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  bannerValue: {
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  bannerIcon: {
+    fontSize: 22,
+  },
+  scrollList: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    paddingVertical: 48,
+    paddingHorizontal: 16,
+  },
+  emptyIcon: {
+    fontSize: 32,
+    marginBottom: 12,
+  },
+  emptyTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  emptySubtitle: {
+    fontSize: 12,
+    textAlign: 'center',
+    lineHeight: 18,
+    marginBottom: 24,
+  },
+  supplierItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    marginBottom: 10,
+    borderRadius: 16,
+    borderWidth: 1,
+  },
+  itemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    flex: 1,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    fontWeight: '800',
+    fontSize: 14,
+  },
+  supplierName: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  supplierPhone: {
+    fontSize: 11,
+    marginTop: 2,
+  },
+  lastActiveText: {
+    fontSize: 9,
+    marginTop: 3,
+  },
+  itemRight: {
+    alignItems: 'flex-end',
+  },
+  balanceValue: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  emeraldText: {
+    color: '#4edea3',
+  },
+  balanceStatusEmerald: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: '#10b981',
+    marginTop: 2,
+  },
+  balanceStatusCoral: {
+    fontSize: 9,
+    fontWeight: '700',
+    marginTop: 2,
+  },
+  balanceStatusMuted: {
+    fontSize: 9,
+    marginTop: 2,
+  },
+  bottomGap: {
+    height: 60,
+  },
+});

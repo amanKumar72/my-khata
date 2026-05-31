@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 15px 2px rgba(99, 102, 241, 0.2);
+        }
+        .glass-card {
+            background: #171717;
+            border: 1px solid #262626;
+        }
+        /* Custom scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-tertiary": "#67001b",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "surface-dim": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "on-error": "#690005",
+                        "background": "#131313",
+                        "on-primary-container": "#0d0096",
+                        "tertiary-container": "#ff516a",
+                        "on-tertiary-container": "#5b0017",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#92002a",
+                        "tertiary-fixed": "#ffdadb",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "outline": "#908fa0",
+                        "primary-fixed": "#e1e0ff",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed": "#07006c",
+                        "surface-bright": "#3a3939",
+                        "secondary": "#4edea3",
+                        "on-secondary": "#003824",
+                        "surface-container-highest": "#353534",
+                        "primary-container": "#8083ff",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface-variant": "#c7c4d7",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-secondary-fixed": "#002113",
+                        "primary": "#c0c1ff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "secondary-container": "#00a572",
+                        "surface-variant": "#353534",
+                        "inverse-primary": "#494bd6",
+                        "on-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "tertiary": "#ffb2b7",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-primary": "#1000a9",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#c0c1ff",
+                        "on-background": "#e5e2e1",
+                        "on-secondary-container": "#00311f",
+                        "outline-variant": "#464554",
+                        "on-tertiary-fixed": "#40000d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "lg": "24px",
+                        "margin-desktop": "32px",
+                        "md": "16px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- Top Navigation Anchor -->
+<header class="sticky top-0 z-40 bg-background border-b border-surface-variant flex justify-between items-center px-margin-mobile w-full h-16">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="JD" class="w-full h-full object-cover" data-alt="A sophisticated professional portrait avatar for a premium financial application. The lighting is dramatic and moody with deep shadows and soft indigo highlights, reflecting a technological and luxury business aesthetic. The background is a blurred, dark minimalist office interior with subtle light bokeh." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG-ivS633ypBr7pwsVozd5P5LqmhPNTqXzR_6wvn1xvIFainCnLhAxrKrSOFGoD_OMAbq16A1rLurMk6deRqk5QbuC1N1_J9zaTvjWrMq2BIK44qdoa7CBRZwdxy_kgZyu8ETKL6W5NdBydDOejuUB6SEXtkTDZ9_TNdQs6C-eRkkuuxm4yRRru0gJF9J0Y-mgnchTgceq27G9boyq5PRd1EAL6o3jweVavx5cigJa-KcU94X9-9_geivZmaizVdjOkhizK9CmEINh"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Settings</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="search">search</span>
+</button>
+</header>
+<main class="max-w-2xl mx-auto px-margin-mobile pt-lg space-y-xl">
+<!-- Profile Header Section -->
+<section class="glass-card rounded-xl p-lg flex items-center gap-lg">
+<div class="relative">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="John Doe" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional male in his early 30s with a clean-cut look, positioned in a high-end, dark-themed studio environment. The image is filtered with a slight cool blue tint, matching a modern financial dashboard aesthetic. Lighting is sharp and highlights the facial features against a charcoal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4tNI2NQxLyC3TL610YT6ph-2M-qI1mOMhuGxXlOmVIuWFg6O1kmrIu7jTU1P6PQs183uSxjfr0gfiPpgtPWFboY5FVH4bG0Q4P1WV_QvOC7GtCJBNzzePzdFXX_qzbJ75uHhV0a2Z1vM2cV9-1wv6TysEGuw_LFB1oMW8ANyd30FNqT00qn8tZAC3l6wE_CAfx_DGA9b2S98e7_UTwg-xsckSFJ4KPtbGFUC2kQLGV6KQDRSWQ7mwRHQ4yuKTqIvid2omS8vfZ7Fs"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary rounded-full border-2 border-background flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-on-secondary" data-icon="edit" data-weight="fill" style="font-variation-settings: 'FILL' 1;">edit</span>
+</div>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">John Doe</h2>
+<p class="font-body-md text-label-md text-on-surface-variant">Premium Account • john.doe@luminous.com</p>
+<div class="mt-xs inline-flex items-center px-xs py-0.5 rounded-full bg-secondary/10 border border-secondary/20">
+<span class="text-[10px] font-bold text-secondary uppercase tracking-wider">Verified Merchant</span>
+</div>
+</div>
+</section>
+<!-- Business Group -->
+<section class="space-y-sm">
+<h3 class="font-label-lg text-label-lg text-primary uppercase tracking-widest pl-xs">Business</h3>
+<div class="glass-card rounded-xl overflow-hidden divide-y divide-surface-variant">
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="store">store</span>
+</div>
+<span class="font-body-lg text-body-lg">Manage Stores</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<span class="font-body-lg text-body-lg">Currency</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="text-label-md text-on-surface-variant">USD ($)</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+</div>
+<span class="font-body-lg text-body-lg">Categories</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Security Group -->
+<section class="space-y-sm">
+<h3 class="font-label-lg text-label-lg text-primary uppercase tracking-widest pl-xs">Security</h3>
+<div class="glass-card rounded-xl overflow-hidden divide-y divide-surface-variant">
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</div>
+<span class="font-body-lg text-body-lg">App Lock PIN</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="password">password</span>
+</div>
+<span class="font-body-lg text-body-lg">Change PIN</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Data Management Group -->
+<section class="space-y-sm">
+<h3 class="font-label-lg text-label-lg text-primary uppercase tracking-widest pl-xs">Data Management</h3>
+<div class="glass-card rounded-xl overflow-hidden divide-y divide-surface-variant">
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg">Backup</span>
+<span class="text-label-md text-on-surface-variant">Last synced 2h ago</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="sync">sync</span>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="restore">restore</span>
+</div>
+<span class="font-body-lg text-body-lg">Restore</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="file_export">file_export</span>
+</div>
+<span class="font-body-lg text-body-lg">Export Data (CSV/PDF)</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="download">download</span>
+</div>
+</div>
+</section>
+<!-- Appearance Group -->
+<section class="space-y-sm">
+<h3 class="font-label-lg text-label-lg text-primary uppercase tracking-widest pl-xs">Appearance</h3>
+<div class="glass-card rounded-xl overflow-hidden divide-y divide-surface-variant">
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</div>
+<span class="font-body-lg text-body-lg">Dark Theme</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- About Group -->
+<section class="space-y-sm">
+<h3 class="font-label-lg text-label-lg text-primary uppercase tracking-widest pl-xs">About</h3>
+<div class="glass-card rounded-xl overflow-hidden divide-y divide-surface-variant">
+<div class="flex items-center justify-between p-md hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+</div>
+<span class="font-body-lg text-body-lg">Version</span>
+</div>
+<span class="text-label-md text-on-surface-variant">2.4.0 (Build 108)</span>
+</div>
+</div>
+</section>
+<!-- Action Buttons -->
+<section class="pt-xl pb-xxl flex flex-col gap-md">
+<button class="w-full h-14 rounded-xl border border-outline-variant flex items-center justify-center gap-sm font-label-lg text-on-surface hover:bg-surface-container-high active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+                Switch Store
+            </button>
+<button class="w-full h-14 rounded-xl bg-error-container/20 border border-error-container flex items-center justify-center gap-sm font-label-lg text-error hover:bg-error-container/30 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Log Out
+            </button>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center py-xs px-base bg-surface-container border-t border-surface-variant shadow-lg md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Suppliers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings" data-weight="fill" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for scale effect on list items
+        document.querySelectorAll('.glass-card div[cursor-pointer]').forEach(item => {
+            item.addEventListener('mousedown', () => {
+                item.style.transform = 'scale(0.99)';
+            });
+            item.addEventListener('mouseup', () => {
+                item.style.transform = 'scale(1)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple feedback for the sync icon rotation
+        const syncBtn = document.querySelector('[data-icon="sync"]');
+        if(syncBtn) {
+            syncBtn.parentElement.addEventListener('click', () => {
+                syncBtn.classList.add('animate-spin');
+                setTimeout(() => {
+                    syncBtn.classList.remove('animate-spin');
+                }, 2000);
+            });
+        }
+    </script>
+</body></html>

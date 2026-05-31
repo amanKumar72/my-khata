@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Luminous Ledger - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-tertiary": "#67001b",
+                    "tertiary-fixed-dim": "#ffb2b7",
+                    "surface-dim": "#131313",
+                    "surface-container-high": "#2a2a2a",
+                    "surface": "#131313",
+                    "on-error": "#690005",
+                    "background": "#131313",
+                    "on-primary-container": "#0d0096",
+                    "tertiary-container": "#ff516a",
+                    "on-tertiary-container": "#5b0017",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-tertiary-fixed-variant": "#92002a",
+                    "tertiary-fixed": "#ffdadb",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "outline": "#908fa0",
+                    "primary-fixed": "#e1e0ff",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed": "#07006c",
+                    "surface-bright": "#3a3939",
+                    "secondary": "#4edea3",
+                    "on-secondary": "#003824",
+                    "surface-container-highest": "#353534",
+                    "primary-container": "#8083ff",
+                    "surface-container-low": "#1c1b1b",
+                    "on-surface-variant": "#c7c4d7",
+                    "secondary-fixed": "#6ffbbe",
+                    "on-secondary-fixed": "#002113",
+                    "primary": "#c0c1ff",
+                    "on-secondary-fixed-variant": "#005236",
+                    "secondary-container": "#00a572",
+                    "surface-variant": "#353534",
+                    "inverse-primary": "#494bd6",
+                    "on-surface": "#e5e2e1",
+                    "inverse-on-surface": "#313030",
+                    "surface-container": "#201f1f",
+                    "error-container": "#93000a",
+                    "tertiary": "#ffb2b7",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "on-primary": "#1000a9",
+                    "on-error-container": "#ffdad6",
+                    "surface-tint": "#c0c1ff",
+                    "on-background": "#e5e2e1",
+                    "on-secondary-container": "#00311f",
+                    "outline-variant": "#464554",
+                    "on-tertiary-fixed": "#40000d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xxl": "48px",
+                    "xl": "32px",
+                    "margin-mobile": "16px",
+                    "sm": "12px",
+                    "xs": "8px",
+                    "lg": "24px",
+                    "margin-desktop": "32px",
+                    "md": "16px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-indigo {
+            box-shadow: 0 0 20px 0 rgba(99, 102, 241, 0.25);
+        }
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #262626;
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen pb-24">
+<!-- Top AppBar -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-margin-mobile w-full bg-background border-b border-surface-variant h-16">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden border border-outline-variant">
+<img alt="Store Logo" class="w-full h-full object-cover" data-alt="A sophisticated minimalist logo for a tech-oriented electronics store, featuring sharp geometric lines and a subtle glow. The logo is rendered in electric indigo and crisp white against a deep charcoal background, reflecting a high-end, futuristic brand identity for Luminous Ledger." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACiTPJUSl50aSngCKR0jB9ec7vGIV76r3zFFTURoAPhSVFFtvBV5wS-2xhAQ2sxa7-3yUF7fn9GeH7vlRrVb9nOosjnXKdT1t0GpZ7omI9JzhPUsWiL6LCKvrs-gY2_tM5TYrep0ZEDMQ3k83dMlys0KqO-ViEiXhIJ9yYrST1vLHMGVyJTOmiJ0rl0BNlGCqzSQrlAA2kUPtGCKCL51UkuH5B6RHXkXhzOxGRVoxC5YTK4AJdv_bNJ7UeV8XayMFT7YqKR7GKR58D"/>
+</div>
+<div class="flex flex-col">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Modern Electronics</h1>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+                    Store Switcher <span class="material-symbols-outlined text-[14px]">expand_more</span>
+</span>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary" data-icon="search">search</span>
+</button>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile pt-lg space-y-xl">
+<!-- Primary Metric Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Receivable (Emerald) -->
+<div class="bg-[#171717] border border-[#262626] rounded-xl p-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-5 blur-[60px] -mr-16 -mt-16 group-hover:opacity-10 transition-opacity"></div>
+<div class="flex justify-between items-start mb-base">
+<span class="font-label-lg text-label-lg text-on-surface-variant">You will get</span>
+<span class="material-symbols-outlined text-secondary" data-icon="trending_up">trending_up</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-secondary mb-xs">
+                    ₹ 4,82,900
+                </div>
+<div class="font-label-md text-label-md text-on-surface-variant">
+                    Across 12 Customers
+                </div>
+</div>
+<!-- Payable (Coral/Tertiary) -->
+<div class="bg-[#171717] border border-[#262626] rounded-xl p-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-container opacity-5 blur-[60px] -mr-16 -mt-16 group-hover:opacity-10 transition-opacity"></div>
+<div class="flex justify-between items-start mb-base">
+<span class="font-label-lg text-label-lg text-on-surface-variant">You will give</span>
+<span class="material-symbols-outlined text-tertiary-container" data-icon="trending_down">trending_down</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-tertiary-container mb-xs">
+                    ₹ 1,12,050
+                </div>
+<div class="font-label-md text-label-md text-on-surface-variant">
+                    To 5 Suppliers
+                </div>
+</div>
+</div>
+<!-- Today's Summary -->
+<section class="bg-surface-container-low rounded-xl p-md border border-outline-variant/20">
+<h2 class="font-label-lg text-label-lg text-on-surface mb-md">Today's Cashflow</h2>
+<div class="flex items-center gap-xl">
+<div class="flex-1 flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Cash In</span>
+<span class="font-headline-sm text-headline-sm text-secondary">+ ₹ 12,400</span>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<div class="flex-1 flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Cash Out</span>
+<span class="font-headline-sm text-headline-sm text-tertiary-container">- ₹ 4,200</span>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section>
+<h2 class="font-label-lg text-label-lg text-on-surface mb-md">Quick Actions</h2>
+<div class="flex gap-md overflow-x-auto scroll-hide pb-base">
+<button class="flex flex-col items-center gap-xs min-w-[90px] group">
+<div class="w-14 h-14 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container/20 group-hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Add Cash</span>
+</button>
+<button class="flex flex-col items-center gap-xs min-w-[90px] group">
+<div class="w-14 h-14 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container/20 group-hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Customer</span>
+</button>
+<button class="flex flex-col items-center gap-xs min-w-[90px] group">
+<div class="w-14 h-14 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container/20 group-hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Supplier</span>
+</button>
+<button class="flex flex-col items-center gap-xs min-w-[90px] group">
+<div class="w-14 h-14 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container/20 group-hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Scan QR</span>
+</button>
+</div>
+</section>
+<!-- Insights Banner -->
+<section class="relative rounded-2xl overflow-hidden h-32 glow-indigo">
+<img class="absolute inset-0 w-full h-full object-cover opacity-40" data-alt="Abstract data visualization with flowing lines of light representing financial trends. The background is a deep, velvety charcoal with vibrant neon indigo and teal accents. The mood is highly technological and futuristic, conveying precision and wealth in a modern digital art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRRREk0DzHkjAP0sD1EZMH9ytu6OR39WBopNhT99mhz3rptNWmrdlAkLQf4MeBjTYxynPmcx1uuohLVra54Gl6wFtg9lNU6e7mHgUhZSbKJEsZvl1K0dAqKKWDIdcSBU2NKuHh5N6s_PXorjcYoD4-3spwv3zLrl8UBweYNxMlYzb9MztlwwRgM2P5s-yKd4j2frJBqvA0otgKYt4srWzVYRoFq4KHiF6eLXBZoudbF_ORHGbYse9QboWsdTtjbcsQQR_jLwM2T1BI"/>
+<div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent p-lg flex flex-col justify-center">
+<div class="flex items-center gap-xs text-primary mb-base">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Weekly Insights</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-white">Your receivables grew by 12%</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Review 3 pending invoices from last week.</p>
+</div>
+</section>
+<!-- Recent Transactions -->
+<section class="space-y-md">
+<div class="flex justify-between items-center">
+<h2 class="font-label-lg text-label-lg text-on-surface">Recent Transactions</h2>
+<button class="text-primary font-label-md text-label-md hover:underline transition-all">View All</button>
+</div>
+<div class="space-y-xs">
+<!-- Date Indicator -->
+<div class="font-label-md text-label-md text-outline py-xs">TODAY, 24 OCT</div>
+<!-- Transaction Card 1 -->
+<div class="bg-[#171717] border border-[#262626] rounded-lg p-md flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="arrow_downward">arrow_downward</span>
+</div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface">Rahul Sharma</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Payment Received</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-lg text-label-lg text-secondary">+ ₹ 15,000</div>
+<div class="font-label-md text-label-md text-on-surface-variant">10:45 AM</div>
+</div>
+</div>
+<!-- Transaction Card 2 -->
+<div class="bg-[#171717] border border-[#262626] rounded-lg p-md flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="arrow_upward">arrow_upward</span>
+</div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface">Global Electrics Ltd</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Stock Purchase</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-lg text-label-lg text-tertiary-container">- ₹ 45,200</div>
+<div class="font-label-md text-label-md text-on-surface-variant">09:12 AM</div>
+</div>
+</div>
+<!-- Date Indicator -->
+<div class="font-label-md text-label-md text-outline py-xs pt-md">YESTERDAY, 23 OCT</div>
+<!-- Transaction Card 3 -->
+<div class="bg-[#171717] border border-[#262626] rounded-lg p-md flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="arrow_downward">arrow_downward</span>
+</div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface">Anita Singh</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Installment Recv.</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-lg text-label-lg text-secondary">+ ₹ 2,500</div>
+<div class="font-label-md text-label-md text-on-surface-variant">04:30 PM</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB -->
+<button class="fixed right-lg bottom-24 w-16 h-16 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center shadow-xl glow-indigo z-50 hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center py-xs px-base bg-surface-container border-t border-surface-variant shadow-lg">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all active:transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all active:transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Suppliers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all active:transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all active:transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction: Pulsing glow for the FAB occasionally
+        setInterval(() => {
+            const fab = document.querySelector('.glow-indigo');
+            if (fab) {
+                fab.style.boxShadow = "0 0 35px 5px rgba(99, 102, 241, 0.4)";
+                setTimeout(() => {
+                    fab.style.boxShadow = "0 0 20px 0 rgba(99, 102, 241, 0.25)";
+                }, 800);
+            }
+        }, 5000);
+
+        // Simple smooth scroll behavior for quick actions
+        const scrollContainer = document.querySelector('.scroll-hide');
+        scrollContainer.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            scrollContainer.scrollLeft += evt.deltaY;
+        });
+    </script>
+</body></html>

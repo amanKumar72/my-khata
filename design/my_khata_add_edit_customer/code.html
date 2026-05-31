@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Customer - My Khata</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e2e1;
+    }
+    .glow-primary {
+      box-shadow: 0 0 20px 0px rgba(99, 102, 241, 0.25);
+    }
+    .glass-card {
+      background: #171717;
+      border: 1px solid #262626;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    input:focus ~ label, input:not(:placeholder-shown) ~ label {
+      transform: translateY(-1.5rem) scale(0.85);
+      color: #c0c1ff;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container": "#201f1f",
+            "primary-container": "#8083ff",
+            "surface": "#131313",
+            "on-background": "#e5e2e1",
+            "on-tertiary": "#67001b",
+            "on-surface-variant": "#c7c4d7",
+            "inverse-on-surface": "#313030",
+            "outline-variant": "#464554",
+            "secondary-fixed": "#6ffbbe",
+            "background": "#131313",
+            "primary-fixed-dim": "#c0c1ff",
+            "tertiary-container": "#ff516a",
+            "surface-tint": "#c0c1ff",
+            "on-tertiary-fixed": "#40000d",
+            "tertiary-fixed": "#ffdadb",
+            "on-tertiary-container": "#5b0017",
+            "tertiary": "#ffb2b7",
+            "tertiary-fixed-dim": "#ffb2b7",
+            "on-surface": "#e5e2e1",
+            "inverse-surface": "#e5e2e1",
+            "surface-container-low": "#1c1b1b",
+            "surface-container-highest": "#353534",
+            "on-primary-container": "#0d0096",
+            "on-error": "#690005",
+            "on-primary": "#1000a9",
+            "on-secondary": "#003824",
+            "on-secondary-fixed-variant": "#005236",
+            "primary-fixed": "#e1e0ff",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "on-primary-fixed": "#07006c",
+            "primary": "#c0c1ff",
+            "surface-variant": "#353534",
+            "secondary-fixed-dim": "#4edea3",
+            "outline": "#908fa0",
+            "on-tertiary-fixed-variant": "#92002a",
+            "on-error-container": "#ffdad6",
+            "surface-container-lowest": "#0e0e0e",
+            "on-secondary-container": "#00311f",
+            "inverse-primary": "#494bd6",
+            "error-container": "#93000a",
+            "secondary-container": "#00a572",
+            "surface-dim": "#131313",
+            "error": "#ffb4ab",
+            "on-secondary-fixed": "#002113",
+            "surface-container-high": "#2a2a2a",
+            "secondary": "#4edea3",
+            "surface-bright": "#3a3939"
+          },
+          "spacing": {
+            "xl": "32px", "sm": "12px", "margin-desktop": "32px", "xxl": "48px", "md": "16px", "margin-mobile": "16px", "gutter": "16px", "xs": "8px", "lg": "24px", "base": "4px"
+          },
+          "fontSize": {
+            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-14 sticky top-0 z-50">
+<div class="flex items-center gap-md">
+<button class="text-on-surface hover:bg-surface-container-low p-2 rounded-full transition-transform active:scale-95" onclick="history.back()">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-headline-md font-headline-md font-bold text-on-surface">Add Customer</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">storefront</span>
+<span class="hidden md:block text-label-md font-label-md text-on-surface-variant">Store Name</span>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center p-md md:p-xl">
+<div class="w-full max-w-2xl">
+<!-- Form Container -->
+<div class="glass-card rounded-xl p-lg md:p-xl shadow-2xl relative overflow-hidden">
+<!-- Visual Accent: Subtle Indigo Glow -->
+<div class="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 blur-[60px] rounded-full"></div>
+<form class="space-y-lg relative z-10" id="customerForm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Full Name -->
+<div class="relative group">
+<input class="block w-full px-md py-sm bg-surface-variant border-transparent border-b-outline border-b focus:border-primary focus:ring-0 text-on-surface transition-all duration-200 rounded-t-lg" id="fullName" name="fullName" placeholder=" " required="" type="text"/>
+<label class="absolute left-md top-sm text-on-surface-variant transition-all pointer-events-none text-body-md" for="fullName">Full Name</label>
+</div>
+<!-- Mobile Number -->
+<div class="relative group">
+<input class="block w-full px-md py-sm bg-surface-variant border-transparent border-b-outline border-b focus:border-primary focus:ring-0 text-on-surface transition-all duration-200 rounded-t-lg" id="mobile" name="mobile" placeholder=" " required="" type="tel"/>
+<label class="absolute left-md top-sm text-on-surface-variant transition-all pointer-events-none text-body-md" for="mobile">Mobile Number</label>
+</div>
+<!-- Address (Optional) -->
+<div class="relative group md:col-span-2">
+<input class="block w-full px-md py-sm bg-surface-variant border-transparent border-b-outline border-b focus:border-primary focus:ring-0 text-on-surface transition-all duration-200 rounded-t-lg" id="address" name="address" placeholder=" " type="text"/>
+<label class="absolute left-md top-sm text-on-surface-variant transition-all pointer-events-none text-body-md" for="address">Address (Optional)</label>
+</div>
+<!-- Opening Balance -->
+<div class="relative group">
+<input class="block w-full px-md py-sm bg-surface-variant border-transparent border-b-outline border-b focus:border-primary focus:ring-0 text-on-surface transition-all duration-200 rounded-t-lg" id="balance" name="balance" placeholder=" " type="number"/>
+<label class="absolute left-md top-sm text-on-surface-variant transition-all pointer-events-none text-body-md" for="balance">Opening Balance</label>
+</div>
+<!-- Balance Type Toggle -->
+<div class="flex flex-col gap-xs">
+<label class="text-label-md font-label-md text-on-surface-variant ml-md">Balance Type</label>
+<div class="flex bg-surface-container-low rounded-lg p-1 border border-outline-variant h-[44px]">
+<button class="flex-1 rounded-md text-label-lg transition-all duration-200 bg-primary text-on-primary shadow-sm" id="debitBtn" onclick="toggleBalance('debit')" type="button">
+                  Debit
+                </button>
+<button class="flex-1 rounded-md text-label-lg transition-all duration-200 text-on-surface-variant hover:text-on-surface" id="creditBtn" onclick="toggleBalance('credit')" type="button">
+                  Credit
+                </button>
+</div>
+</div>
+</div>
+<!-- Description Section -->
+<div class="pt-md">
+<p class="text-label-md text-on-surface-variant italic">
+              * Opening balance helps initialize the ledger for this customer.
+            </p>
+</div>
+<!-- Actions -->
+<div class="flex flex-col md:flex-row gap-md pt-lg">
+<button class="flex-1 bg-primary text-on-primary font-label-lg text-label-lg py-md rounded-lg glow-primary hover:bg-primary/90 transition-all active:scale-95 flex items-center justify-center gap-xs" type="submit">
+<span class="material-symbols-outlined">save</span>
+              Save Customer
+            </button>
+<button class="flex-1 bg-transparent border border-outline-variant text-on-surface font-label-lg text-label-lg py-md rounded-lg hover:bg-surface-container transition-all active:scale-95" onclick="history.back()" type="button">
+              Cancel
+            </button>
+</div>
+</form>
+</div>
+<!-- Feature Card: Security Assurance -->
+<div class="mt-xl flex items-center gap-md p-md glass-card rounded-xl opacity-80">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<h3 class="text-label-lg text-on-surface">Secure Financial Logging</h3>
+<p class="text-label-md text-on-surface-variant">All entries are encrypted and synced in real-time with your cloud ledger.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell (Suppressed as per task context - sub-page/transactional) -->
+<script>
+    function toggleBalance(type) {
+      const debitBtn = document.getElementById('debitBtn');
+      const creditBtn = document.getElementById('creditBtn');
+      
+      if (type === 'debit') {
+        debitBtn.classList.add('bg-primary', 'text-on-primary');
+        debitBtn.classList.remove('text-on-surface-variant');
+        creditBtn.classList.remove('bg-primary', 'text-on-primary');
+        creditBtn.classList.add('text-on-surface-variant');
+      } else {
+        creditBtn.classList.add('bg-primary', 'text-on-primary');
+        creditBtn.classList.remove('text-on-surface-variant');
+        debitBtn.classList.remove('bg-primary', 'text-on-primary');
+        debitBtn.classList.add('text-on-surface-variant');
+      }
+    }
+
+    document.getElementById('customerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = e.submitter;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Saving...';
+      btn.disabled = true;
+      
+      setTimeout(() => {
+        alert('Customer saved successfully!');
+        window.location.reload();
+      }, 1500);
+    });
+  </script>
+</body></html>

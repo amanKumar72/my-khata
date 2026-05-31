@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports - Luminous Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: #171717;
+            border: 1px solid #262626;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #464554;
+        }
+        .glow-primary {
+            box-shadow: 0 0 20px 0px rgba(99, 102, 241, 0.15);
+        }
+        .chart-bar {
+            transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "secondary-fixed-dim": "#4edea3",
+                "on-tertiary": "#67001b",
+                "tertiary-fixed-dim": "#ffb2b7",
+                "surface-dim": "#131313",
+                "surface-container-high": "#2a2a2a",
+                "surface": "#131313",
+                "on-error": "#690005",
+                "background": "#131313",
+                "on-primary-container": "#0d0096",
+                "tertiary-container": "#ff516a",
+                "on-tertiary-container": "#5b0017",
+                "inverse-surface": "#e5e2e1",
+                "surface-container-lowest": "#0e0e0e",
+                "on-tertiary-fixed-variant": "#92002a",
+                "tertiary-fixed": "#ffdadb",
+                "primary-fixed-dim": "#c0c1ff",
+                "outline": "#908fa0",
+                "primary-fixed": "#e1e0ff",
+                "error": "#ffb4ab",
+                "on-primary-fixed": "#07006c",
+                "surface-bright": "#3a3939",
+                "secondary": "#4edea3",
+                "on-secondary": "#003824",
+                "surface-container-highest": "#353534",
+                "primary-container": "#8083ff",
+                "surface-container-low": "#1c1b1b",
+                "on-surface-variant": "#c7c4d7",
+                "secondary-fixed": "#6ffbbe",
+                "on-secondary-fixed": "#002113",
+                "primary": "#c0c1ff",
+                "on-secondary-fixed-variant": "#005236",
+                "secondary-container": "#00a572",
+                "surface-variant": "#353534",
+                "inverse-primary": "#494bd6",
+                "on-surface": "#e5e2e1",
+                "inverse-on-surface": "#313030",
+                "surface-container": "#201f1f",
+                "error-container": "#93000a",
+                "tertiary": "#ffb2b7",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "on-primary": "#1000a9",
+                "on-error-container": "#ffdad6",
+                "surface-tint": "#c0c1ff",
+                "on-background": "#e5e2e1",
+                "on-secondary-container": "#00311f",
+                "outline-variant": "#464554",
+                "on-tertiary-fixed": "#40000d"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "base": "4px",
+                "xxl": "48px",
+                "xl": "32px",
+                "margin-mobile": "16px",
+                "sm": "12px",
+                "xs": "8px",
+                "lg": "24px",
+                "margin-desktop": "32px",
+                "md": "16px",
+                "gutter": "16px"
+              },
+              "fontFamily": {
+                "headline-sm": ["Inter"],
+                "headline-lg-mobile": ["Inter"],
+                "headline-md": ["Inter"],
+                "label-lg": ["Inter"],
+                "body-lg": ["Inter"],
+                "label-md": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-background border-b border-surface-variant flex justify-between items-center px-margin-mobile h-16 md:px-margin-desktop">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Store Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpcyQYsEeAcS1YiHFb-1Dig99NyvTnNdNzCjLFHcNvWgJmfPGuAbYtfGsbIaCKWDK8qdIxUSP5pnbKaOCaGSWmXuUkvk9eXPS-ayzG8qSfTTfkeOj9MKZ8zAQYSXJ3z7P5kL4IuZZUb7atLqea9D4l8cwPpIEtQfU8FT9RnHucWWTNPa8C0DHSb55w5jk-qwCfNPjhoYqdWXV4AGkf2qXcLqT7I42glEYDD6SYweRTclugDM13rYeGfkaP8lb2skRKUm30KjPQZKHN"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">My Khata</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="search">search</span>
+</button>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin-mobile max-w-5xl mx-auto md:px-margin-desktop">
+<!-- Header & Time Chips -->
+<div class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-md md:font-headline-lg md:text-headline-lg">Financial Reports</h2>
+<div class="flex gap-xs overflow-x-auto pb-xs no-scrollbar">
+<button class="px-md py-xs rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md whitespace-nowrap">Today</button>
+<button class="px-md py-xs rounded-full bg-surface-container-low text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">This Week</button>
+<button class="px-md py-xs rounded-full bg-surface-container-low text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">This Month</button>
+<button class="px-md py-xs rounded-full bg-surface-container-low text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Financial Year</button>
+</div>
+</div>
+<!-- Asymmetric Bento Grid Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-lg">
+<!-- Net Profit Card (Large) -->
+<div class="md:col-span-2 glass-card rounded-xl p-lg relative overflow-hidden flex flex-col justify-between h-64 glow-primary">
+<div class="flex justify-between items-start z-10">
+<div>
+<p class="font-label-lg text-label-lg text-on-surface-variant mb-xs">Net Profit</p>
+<h3 class="font-headline-lg text-headline-lg text-primary">₹ 1,42,500.00</h3>
+</div>
+<div class="flex items-center gap-xs px-sm py-1 rounded-full bg-secondary/10 text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="trending_up">trending_up</span>
+<span class="font-label-md text-label-md">+12.4%</span>
+</div>
+</div>
+<!-- Simple Abstract Area Chart Representation -->
+<div class="absolute bottom-0 left-0 w-full h-32 opacity-30">
+<svg class="w-full h-full preserve-3d" viewbox="0 0 400 100">
+<path d="M0 80 Q 50 20, 100 60 T 200 40 T 300 70 T 400 30 V 100 H 0 Z" fill="url(#gradient-indigo)"></path>
+<defs>
+<lineargradient id="gradient-indigo" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#6366f1"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="z-10 flex gap-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Last Month</span>
+<span class="font-label-lg text-label-lg text-on-surface">₹ 1,26,800</span>
+</div>
+</div>
+</div>
+<!-- Stats Stack -->
+<div class="flex flex-col gap-md">
+<div class="glass-card rounded-xl p-md flex-1 flex flex-col justify-center">
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs">Total Sales</p>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">₹ 4,82,000</h4>
+<div class="w-full bg-surface-variant h-1 rounded-full mt-md overflow-hidden">
+<div class="bg-primary h-full w-[75%]"></div>
+</div>
+</div>
+<div class="glass-card rounded-xl p-md flex-1 flex flex-col justify-center">
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs">Cash in Hand</p>
+<h4 class="font-headline-sm text-headline-sm text-secondary">₹ 84,200</h4>
+<div class="w-full bg-surface-variant h-1 rounded-full mt-md overflow-hidden">
+<div class="bg-secondary h-full w-[40%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Cash Flow Bar Chart -->
+<div class="glass-card rounded-xl p-lg mb-lg">
+<div class="flex justify-between items-center mb-xl">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Cash Flow Analysis</h3>
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Cash In</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Cash Out</span>
+</div>
+</div>
+</div>
+<div class="flex items-end justify-between h-48 gap-xs md:gap-lg px-xs">
+<!-- Bar 1 -->
+<div class="flex flex-col items-center gap-xs flex-1 max-w-[40px]">
+<div class="w-full flex items-end gap-[2px] h-full">
+<div class="chart-bar bg-primary w-1/2 rounded-t-sm" style="height: 60%"></div>
+<div class="chart-bar bg-tertiary w-1/2 rounded-t-sm" style="height: 40%"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Mon</span>
+</div>
+<!-- Bar 2 -->
+<div class="flex flex-col items-center gap-xs flex-1 max-w-[40px]">
+<div class="w-full flex items-end gap-[2px] h-full">
+<div class="chart-bar bg-primary w-1/2 rounded-t-sm" style="height: 80%"></div>
+<div class="chart-bar bg-tertiary w-1/2 rounded-t-sm" style="height: 30%"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Tue</span>
+</div>
+<!-- Bar 3 -->
+<div class="flex flex-col items-center gap-xs flex-1 max-w-[40px]">
+<div class="w-full flex items-end gap-[2px] h-full">
+<div class="chart-bar bg-primary w-1/2 rounded-t-sm" style="height: 45%"></div>
+<div class="chart-bar bg-tertiary w-1/2 rounded-t-sm" style="height: 70%"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Wed</span>
+</div>
+<!-- Bar 4 -->
+<div class="flex flex-col items-center gap-xs flex-1 max-w-[40px]">
+<div class="w-full flex items-end gap-[2px] h-full">
+<div class="chart-bar bg-primary w-1/2 rounded-t-sm" style="height: 95%"></div>
+<div class="chart-bar bg-tertiary w-1/2 rounded-t-sm" style="height: 50%"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Thu</span>
+</div>
+<!-- Bar 5 -->
+<div class="flex flex-col items-center gap-xs flex-1 max-w-[40px]">
+<div class="w-full flex items-end gap-[2px] h-full">
+<div class="chart-bar bg-primary w-1/2 rounded-t-sm" style="height: 70%"></div>
+<div class="chart-bar bg-tertiary w-1/2 rounded-t-sm" style="height: 60%"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Fri</span>
+</div>
+<!-- Bar 6 -->
+<div class="flex flex-col items-center gap-xs flex-1 max-w-[40px]">
+<div class="w-full flex items-end gap-[2px] h-full">
+<div class="chart-bar bg-primary w-1/2 rounded-t-sm" style="height: 40%"></div>
+<div class="chart-bar bg-tertiary w-1/2 rounded-t-sm" style="height: 20%"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Sat</span>
+</div>
+</div>
+</div>
+<!-- Breakdown Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-lg">
+<div class="glass-card rounded-xl p-lg border-l-4 border-l-secondary">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Total Credit</h4>
+</div>
+<p class="font-headline-md text-headline-md text-secondary">₹ 2,14,000</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Amount you are yet to receive from customers.</p>
+</div>
+<div class="glass-card rounded-xl p-lg border-l-4 border-l-tertiary">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="payment">payment</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Total Debit</h4>
+</div>
+<p class="font-headline-md text-headline-md text-tertiary">₹ 71,500</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Pending payments to your suppliers.</p>
+</div>
+</div>
+<!-- Insights Card -->
+<div class="bg-surface-container-high rounded-xl p-lg mb-lg border border-primary/20 flex gap-md items-start">
+<span class="material-symbols-outlined text-primary text-[32px]" data-icon="lightbulb">lightbulb</span>
+<div>
+<h4 class="font-label-lg text-label-lg text-primary mb-xs">Smart Insight</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Your net profit has increased by 12.4% compared to last week. Most of this growth comes from the 'Retail Electronics' category. Consider stocking up for the upcoming weekend rush.</p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col md:flex-row gap-md mb-xl">
+<button class="flex-1 bg-primary text-on-primary py-md px-lg rounded-xl flex items-center justify-center gap-md font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all glow-primary">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                Download PDF Report
+            </button>
+<button class="flex-1 bg-surface-container-low border border-surface-variant text-on-surface py-md px-lg rounded-xl flex items-center justify-center gap-md font-label-lg text-label-lg hover:bg-surface-container-high active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+                Share Backup
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center py-xs px-base bg-surface-container border-t border-surface-variant shadow-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Suppliers</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for chart bars
+        document.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach(bar => {
+                const finalHeight = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = finalHeight;
+                }, 300);
+            });
+        });
+    </script>
+</body></html>
