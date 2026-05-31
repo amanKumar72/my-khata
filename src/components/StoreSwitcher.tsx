@@ -6,6 +6,8 @@ import { Button } from './Button';
 import { Input } from './Input';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../constants/Colors';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 interface StoreSwitcherProps {
   visible: boolean;
@@ -256,7 +258,7 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ visible, onClose }
                     >
                       <View style={styles.storeLeft}>
                         <View style={[styles.avatar, { backgroundColor: isActive ? '#c0c1ff30' : '#e2e8f050' }]}>
-                          <Text style={styles.avatarText}>🏪</Text>
+                          <FontAwesome5 name="store" size={14} color={isActive ? colors.primary : colors.textMuted} />
                         </View>
                         <View>
                           <Text style={[
@@ -286,7 +288,7 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ visible, onClose }
                           }}
                           style={styles.editBtn}
                         >
-                          <Text style={styles.editBtnText}>✏️</Text>
+                          <FontAwesome name="pencil" size={13} color={colors.textMuted} />
                         </TouchableOpacity>
                       </View>
                     </TouchableOpacity>

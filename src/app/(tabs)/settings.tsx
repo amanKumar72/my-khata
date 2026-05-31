@@ -13,6 +13,9 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../../constants/Colors';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -295,7 +298,7 @@ export default function SettingsScreen() {
                 Current Mode: {isDark ? 'Luminous Dark Mode' : 'Light Mode'}
               </Text>
             </View>
-            <Text style={styles.settingRowIcon}>{isDark ? '🌙' : '☀️'}</Text>
+            <Ionicons name={isDark ? "moon" : "sunny"} size={20} color={colors.primary} />
           </TouchableOpacity>
 
           <View style={[styles.innerDivider, { backgroundColor: colors.border }]} />
@@ -314,7 +317,7 @@ export default function SettingsScreen() {
                 Status: {hasPin ? 'Active Lock Secure' : 'Disabled / Vulnerable'}
               </Text>
             </View>
-            <Text style={styles.settingRowIcon}>{hasPin ? '🔒' : '🔓'}</Text>
+            <Ionicons name={hasPin ? "lock-closed" : "lock-open"} size={20} color={colors.primary} />
           </TouchableOpacity>
         </Card>
 
@@ -504,7 +507,7 @@ export default function SettingsScreen() {
 
             {localBackups.length === 0 ? (
               <View style={styles.emptyFiles}>
-                <Text style={styles.emptyIcon}>📁</Text>
+                <FontAwesome5 name="folder-open" size={24} color={colors.textMuted} style={{ marginBottom: 8 }} />
                 <Text style={[styles.emptyText, { color: colors.textMuted }]}>
                   No local JSON backup files scanned.
                 </Text>
@@ -528,7 +531,7 @@ export default function SettingsScreen() {
                         {filename}
                       </Text>
                     </View>
-                    <Text style={styles.backupIcon}>📥</Text>
+                    <Ionicons name="download-outline" size={16} color={colors.primary} />
                   </TouchableOpacity>
                 ))}
               </ScrollView>

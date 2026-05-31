@@ -7,6 +7,7 @@ import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../../constants/Colors';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function CreateSupplierScreen() {
   const router = useRouter();
@@ -59,7 +60,7 @@ export default function CreateSupplierScreen() {
       {/* Header bar */}
       <View style={[styles.header, { backgroundColor: isDark ? '#131313' : '#ffffff', borderColor: colors.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={[styles.backText, { color: colors.textMuted }]}>←</Text>
+          <Ionicons name="arrow-back" size={22} color={colors.text} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.text }]}>
           Add New Supplier

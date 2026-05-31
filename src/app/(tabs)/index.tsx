@@ -13,6 +13,9 @@ import { formatCurrency } from '../../utils/currency';
 import { getDayLabel, formatTime } from '../../utils/date';
 import { Colors } from '../../constants/Colors';
 import Toast from 'react-native-toast-message';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -193,7 +196,7 @@ export default function DashboardScreen() {
           style={styles.storeSelectButton}
         >
           <View style={[styles.storeIconCircle, { backgroundColor: isDark ? '#c0c1ff20' : '#e0e7ff' }]}>
-            <Text style={styles.storeIconEmoji}>🏪</Text>
+            <FontAwesome5 name="store" size={16} color={colors.primary} />
           </View>
           <View>
             <Text style={[styles.storeNameText, { color: colors.primary }]}>
@@ -209,7 +212,7 @@ export default function DashboardScreen() {
           onPress={() => router.push('/(tabs)/reports')}
           style={[styles.headerReportButton, { backgroundColor: isDark ? '#1e1e1e' : '#f1f5f9' }]}
         >
-          <Text style={styles.reportIconEmoji}>📊</Text>
+          <Ionicons name="bar-chart-sharp" size={18} color={colors.text} />
         </TouchableOpacity>
       </View>
 
@@ -278,7 +281,7 @@ export default function DashboardScreen() {
               style={styles.actionItem}
             >
               <View style={[styles.actionIconCircle, { backgroundColor: isDark ? '#171717' : '#f8fafc', borderColor: colors.border }]}>
-                <Text style={styles.actionIcon}>💸</Text>
+                <FontAwesome5 name="money-bill-wave" size={18} color={isDark ? '#c0c1ff' : '#4f46e5'} />
               </View>
               <Text style={[styles.actionLabel, { color: colors.text }]}>Add Cash</Text>
             </TouchableOpacity>
@@ -289,7 +292,7 @@ export default function DashboardScreen() {
               style={styles.actionItem}
             >
               <View style={[styles.actionIconCircle, { backgroundColor: isDark ? '#171717' : '#f8fafc', borderColor: colors.border }]}>
-                <Text style={styles.actionIcon}>👤</Text>
+                <FontAwesome5 name="user-plus" size={18} color={isDark ? '#c0c1ff' : '#4f46e5'} />
               </View>
               <Text style={[styles.actionLabel, { color: colors.text }]}>+ Customer</Text>
             </TouchableOpacity>
@@ -300,7 +303,7 @@ export default function DashboardScreen() {
               style={styles.actionItem}
             >
               <View style={[styles.actionIconCircle, { backgroundColor: isDark ? '#171717' : '#f8fafc', borderColor: colors.border }]}>
-                <Text style={styles.actionIcon}>📦</Text>
+                <FontAwesome5 name="box-open" size={18} color={isDark ? '#c0c1ff' : '#4f46e5'} />
               </View>
               <Text style={[styles.actionLabel, { color: colors.text }]}>+ Supplier</Text>
             </TouchableOpacity>
@@ -322,7 +325,7 @@ export default function DashboardScreen() {
 
           {recentCashTransactions.length === 0 ? (
             <Card style={styles.emptyCard}>
-              <Text style={styles.emptyIcon}>📖</Text>
+              <FontAwesome5 name="book-open" size={24} color={colors.textMuted} style={{ marginBottom: 8 }} />
               <Text style={[styles.emptyTitle, { color: colors.text }]}>No Cash Entries Yet</Text>
               <Text style={[styles.emptySubtitle, { color: colors.textMuted }]}>
                 Tap "Add Cash" above to record cash income or expenses.
@@ -346,14 +349,14 @@ export default function DashboardScreen() {
                 >
                   <View style={styles.txLeft}>
                     <View style={[styles.txIconCircle, { backgroundColor: isIncome ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)' }]}>
-                      <Text style={styles.txIconEmoji}>{isIncome ? '📥' : '📤'}</Text>
+                      <Ionicons name={isIncome ? "trending-up-sharp" : "trending-down-sharp"} size={16} color={isIncome ? "#4edea3" : "#ffb2b7"} />
                     </View>
                     <View style={styles.txMeta}>
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                         <Text style={[styles.txNote, { color: colors.text }]}>
                           {item.title}
                         </Text>
-                        <Text style={{ fontSize: 10 }}>✏️</Text>
+                        <FontAwesome name="pencil" size={10} color={colors.textMuted} />
                       </View>
                       <Text style={[styles.txPartyLabel, { color: colors.textMuted }]}>
                         {item.category.toUpperCase()} • {formatTime(item.created_at)}
@@ -428,7 +431,7 @@ export default function DashboardScreen() {
                 }}
               >
                 <Text style={[styles.toggleTabText, editType === 'income' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-                  CASH IN 📥
+                  CASH IN
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -445,7 +448,7 @@ export default function DashboardScreen() {
                 }}
               >
                 <Text style={[styles.toggleTabText, editType === 'expense' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-                  CASH OUT 📤
+                  CASH OUT
                 </Text>
               </TouchableOpacity>
             </View>

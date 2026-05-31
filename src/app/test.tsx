@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TestStyleSheetScreen() {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function TestStyleSheetScreen() {
       {/* Header bar */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backText}>←</Text>
+          <Ionicons name="arrow-back" size={22} color="#908fa0" />
         </TouchableOpacity>
         <View>
           <Text style={styles.headerTitle}>StyleSheet Test</Text>
@@ -55,10 +56,16 @@ export default function TestStyleSheetScreen() {
         {/* Buttons Row */}
         <View style={styles.buttonRow}>
           <TouchableOpacity style={[styles.button, styles.primaryButton]}>
-            <Text style={styles.primaryButtonText}>GIVE CREDIT 📤</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Ionicons name="trending-down-sharp" size={14} color="#ffffff" />
+              <Text style={styles.primaryButtonText}>GIVE CREDIT</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.button, styles.successButton]}>
-            <Text style={styles.successButtonText}>GET PAYMENT 📥</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Ionicons name="trending-up-sharp" size={14} color="#ffffff" />
+              <Text style={styles.successButtonText}>GET PAYMENT</Text>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -101,7 +108,10 @@ export default function TestStyleSheetScreen() {
           style={styles.backToHomeButton}
           onPress={() => router.replace('/(tabs)')}
         >
-          <Text style={styles.backToHomeText}>← Back to Main Dashboard</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <Ionicons name="arrow-back" size={14} color="#c0c1ff" />
+            <Text style={styles.backToHomeText}>Back to Main Dashboard</Text>
+          </View>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

@@ -14,6 +14,9 @@ import { formatCurrency } from '../../utils/currency';
 import { formatDate, getDayLabel, formatTime } from '../../utils/date';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../../constants/Colors';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export default function SupplierProfileScreen() {
   const router = useRouter();
@@ -318,16 +321,16 @@ export default function SupplierProfileScreen() {
 
         <View style={styles.headerRight}>
           <TouchableOpacity onPress={handleOpenEditModal} style={styles.headerActionBtn}>
-            <Text style={styles.headerActionText}>✏️</Text>
+            <FontAwesome name="pencil" size={16} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleShareStatement} style={styles.headerActionBtn}>
-            <Text style={styles.headerActionText}>📤</Text>
+            <FontAwesome name="share-alt" size={16} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleExportCSV} style={styles.headerActionBtn}>
-            <Text style={styles.headerActionText}>📄</Text>
+            <FontAwesome5 name="file-csv" size={16} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDeleteSupplier} style={styles.headerActionBtn}>
-            <Text style={styles.headerActionText}>🗑️</Text>
+            <FontAwesome name="trash" size={16} color={colors.error} />
           </TouchableOpacity>
         </View>
       </View>
@@ -337,18 +340,24 @@ export default function SupplierProfileScreen() {
         <Card style={styles.card}>
           <View style={styles.contactRow}>
             <View style={[styles.contactAvatar, { backgroundColor: isDark ? '#2a2a2a' : '#f1f5f9' }]}>
-              <Text style={styles.contactAvatarIcon}>🏭</Text>
+              <FontAwesome5 name="building" size={18} color={isDark ? '#c0c1ff' : '#4f46e5'} />
             </View>
             <View style={styles.contactMeta}>
               {supplier.phone ? (
-                <Text style={[styles.contactPhone, { color: colors.text }]}>
-                  📞 {supplier.phone}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                  <FontAwesome name="phone" size={12} color={colors.textMuted} />
+                  <Text style={[styles.contactPhone, { color: colors.text, marginBottom: 0 }]}>
+                    {supplier.phone}
+                  </Text>
+                </View>
               ) : null}
               {supplier.address ? (
-                <Text style={[styles.contactAddress, { color: colors.textMuted }]}>
-                  📍 {supplier.address}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <FontAwesome name="map-marker" size={12} color={colors.textMuted} />
+                  <Text style={[styles.contactAddress, { color: colors.textMuted }]}>
+                    {supplier.address}
+                  </Text>
+                </View>
               ) : (
                 <Text style={[styles.contactAddressEmpty, { color: colors.textMuted }]}>
                   No warehouse address registered
@@ -410,7 +419,7 @@ export default function SupplierProfileScreen() {
 
           {transactions.length === 0 ? (
             <Card style={styles.emptyCard}>
-              <Text style={styles.emptyIcon}>📒</Text>
+              <FontAwesome name="book" size={24} color={colors.textMuted} style={{ marginBottom: 8 }} />
               <Text style={[styles.emptyTitle, { color: colors.text }]}>Ledger is Empty</Text>
               <Text style={[styles.emptySubtitle, { color: colors.textMuted }]}>
                 Record stock purchases and payments using the buttons below.
@@ -435,7 +444,7 @@ export default function SupplierProfileScreen() {
                 >
                   <View style={styles.txLeft}>
                     <View style={[styles.txAvatarCircle, { backgroundColor: isCredit ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)' }]}>
-                      <Text style={styles.txIcon}>{isCredit ? '📥' : '📤'}</Text>
+                      <Ionicons name={isCredit ? "trending-up-sharp" : "trending-down-sharp"} size={16} color={isCredit ? "#ef4444" : "#4edea3"} />
                     </View>
                     <View style={styles.txMeta}>
                       <Text style={[styles.txNote, { color: colors.text }]} numberOfLines={2}>
@@ -452,7 +461,7 @@ export default function SupplierProfileScreen() {
                       <Text style={[styles.txAmount, { color: isCredit ? colors.error : '#4edea3' }]}>
                         {isCredit ? '+' : '-'}{formatCurrency(tx.amount, currency)}
                       </Text>
-                      <Text style={{ fontSize: 10 }}>✏️</Text>
+                      <FontAwesome name="pencil" size={10} color={colors.textMuted} />
                     </View>
                     <Text style={[styles.txDate, { color: colors.textMuted }]}>
                       {getDayLabel(tx.created_at).replace(', ', ' ')}

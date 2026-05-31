@@ -12,6 +12,9 @@ import Toast from 'react-native-toast-message';
 import { expenseRepo } from '../../repositories/expenseRepo';
 import { Expense, Category, ExpenseType } from '../../types';
 import { formatDate, formatTime } from '../../utils/date';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 type PeriodType = 'day' | 'week' | 'month' | 'year';
 
@@ -250,18 +253,24 @@ export default function ReportsScreen() {
         {/* Detailed periodic Income and Expense Breakdown */}
         <View style={styles.row}>
           <Card style={styles.metricCard}>
-            <Text style={[styles.sectionTitle, { color: colors.textMuted, fontSize: 8 }]}>
-              Total Income 📥
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 8 }}>
+              <Text style={[styles.sectionTitle, { color: colors.textMuted, fontSize: 8, marginBottom: 0 }]}>
+                Total Income
+              </Text>
+              <Ionicons name="trending-up-sharp" size={10} color="#10b981" />
+            </View>
             <Text style={[styles.metricValue, styles.emeraldText]}>
               {formatCurrency(report?.income || 0, currency)}
             </Text>
           </Card>
           
           <Card style={styles.metricCard}>
-            <Text style={[styles.sectionTitle, { color: colors.textMuted, fontSize: 8 }]}>
-              Total Expense 📤
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 8 }}>
+              <Text style={[styles.sectionTitle, { color: colors.textMuted, fontSize: 8, marginBottom: 0 }]}>
+                Total Expense
+              </Text>
+              <Ionicons name="trending-down-sharp" size={10} color="#ef4444" />
+            </View>
             <Text style={[styles.metricValue, { color: colors.error }]}>
               {formatCurrency(report?.expense || 0, currency)}
             </Text>
@@ -357,7 +366,7 @@ export default function ReportsScreen() {
 
           {cashHistory.length === 0 ? (
             <Card style={styles.emptyCard}>
-              <Text style={styles.emptyIcon}>📖</Text>
+              <FontAwesome5 name="book-open" size={24} color={colors.textMuted} style={{ marginBottom: 8 }} />
               <Text style={[styles.emptyTitle, { color: colors.text }]}>No Cash Entries</Text>
               <Text style={[styles.emptySubtitle, { color: colors.textMuted }]}>
                 Tap "Add Cash" on the Home dashboard to record cash income or expense.
@@ -381,14 +390,14 @@ export default function ReportsScreen() {
                 >
                   <View style={styles.historyLeft}>
                     <View style={[styles.historyAvatarCircle, { backgroundColor: isIncome ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)' }]}>
-                      <Text style={styles.historyIconEmoji}>{isIncome ? '📥' : '📤'}</Text>
+                      <Ionicons name={isIncome ? "trending-up-sharp" : "trending-down-sharp"} size={14} color={isIncome ? "#4edea3" : "#ffb2b7"} />
                     </View>
                     <View style={styles.historyMeta}>
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                         <Text style={[styles.historyTitle, { color: colors.text }]}>
                           {item.title}
                         </Text>
-                        <Text style={{ fontSize: 10 }}>✏️</Text>
+                        <FontAwesome name="pencil" size={10} color={colors.textMuted} />
                       </View>
                       <Text style={[styles.historySubText, { color: colors.textMuted }]}>
                         {item.category} {item.note ? `• ${item.note}` : ''}
@@ -454,7 +463,7 @@ export default function ReportsScreen() {
                 }}
               >
                 <Text style={[styles.toggleTabText, editType === 'income' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-                  CASH IN 📥
+                  CASH IN
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -471,7 +480,7 @@ export default function ReportsScreen() {
                 }}
               >
                 <Text style={[styles.toggleTabText, editType === 'expense' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-                  CASH OUT 📤
+                  CASH OUT
                 </Text>
               </TouchableOpacity>
             </View>

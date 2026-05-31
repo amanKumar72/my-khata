@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useApp } from '../store/AppContext';
 import { Colors } from '../constants/Colors';
 import { Button } from './Button';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 interface EmptyStateProps {
   title: string;
@@ -25,7 +26,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <View style={styles.container}>
       <View style={[styles.iconCircle, { backgroundColor: isDark ? '#1e1e1e' : '#f1f5f9' }]}>
-        <Text style={styles.icon}>📦</Text>
+        <FontAwesome5 name="box-open" size={24} color={colors.textMuted} />
       </View>
       <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
       <Text style={[styles.description, { color: colors.textMuted }]}>{description}</Text>

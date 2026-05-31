@@ -12,6 +12,9 @@ import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../../constants/Colors';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export default function CreateTransactionScreen() {
   const router = useRouter();
@@ -112,7 +115,7 @@ export default function CreateTransactionScreen() {
       {/* Header bar */}
       <View style={[styles.header, { backgroundColor: isDark ? '#131313' : '#ffffff', borderColor: colors.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={[styles.backText, { color: colors.textMuted }]}>←</Text>
+          <Ionicons name="arrow-back" size={22} color={colors.text} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.text }]}>
           Quick Book Transaction
@@ -129,9 +132,12 @@ export default function CreateTransactionScreen() {
               setSelectedParty(null);
             }}
           >
-            <Text style={[styles.toggleTabText, partyType === 'customer' ? { color: colors.text } : { color: colors.textMuted }]}>
-              CUSTOMER 👤
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <FontAwesome name="user" size={13} color={partyType === 'customer' ? colors.text : colors.textMuted} />
+              <Text style={[styles.toggleTabText, partyType === 'customer' ? { color: colors.text } : { color: colors.textMuted }]}>
+                CUSTOMER
+              </Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.toggleTab, partyType === 'supplier' && [styles.toggleTabActive, { backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }]]}
@@ -140,9 +146,12 @@ export default function CreateTransactionScreen() {
               setSelectedParty(null);
             }}
           >
-            <Text style={[styles.toggleTabText, partyType === 'supplier' ? { color: colors.text } : { color: colors.textMuted }]}>
-              SUPPLIER 🏭
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <FontAwesome5 name="building" size={12} color={partyType === 'supplier' ? colors.text : colors.textMuted} style={{ marginTop: -1 }} />
+              <Text style={[styles.toggleTabText, partyType === 'supplier' ? { color: colors.text } : { color: colors.textMuted }]}>
+                SUPPLIER
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -150,7 +159,11 @@ export default function CreateTransactionScreen() {
           <View style={[styles.selectedCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.selectedLeft}>
               <View style={[styles.selectedAvatar, { backgroundColor: isDark ? '#2a2a2a' : '#f1f5f9' }]}>
-                <Text style={styles.selectedAvatarText}>{partyType === 'customer' ? '👤' : '🏭'}</Text>
+                {partyType === 'customer' ? (
+                  <FontAwesome name="user" size={16} color={colors.text} />
+                ) : (
+                  <FontAwesome5 name="building" size={14} color={colors.text} />
+                )}
               </View>
               <View>
                 <Text style={[styles.selectedName, { color: colors.text }]}>
@@ -227,17 +240,23 @@ export default function CreateTransactionScreen() {
             style={[styles.toggleTab, txType === 'credit' && { backgroundColor: '#ef4444' }]}
             onPress={() => setTxType('credit')}
           >
-            <Text style={[styles.toggleTabText, txType === 'credit' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-              {partyType === 'customer' ? 'GAVE CREDIT 📤' : 'PURCHASE CREDIT 📥'}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Ionicons name={partyType === 'customer' ? "trending-down-sharp" : "trending-up-sharp"} size={14} color={txType === 'credit' ? '#ffffff' : colors.textMuted} />
+              <Text style={[styles.toggleTabText, txType === 'credit' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
+                {partyType === 'customer' ? 'GAVE CREDIT' : 'PURCHASE CREDIT'}
+              </Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.toggleTab, txType === 'debit' && { backgroundColor: '#10b981' }]}
             onPress={() => setTxType('debit')}
           >
-            <Text style={[styles.toggleTabText, txType === 'debit' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-              {partyType === 'customer' ? 'GOT PAYMENT 📥' : 'PAID SUPPLIER 📤'}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Ionicons name={partyType === 'customer' ? "trending-up-sharp" : "trending-down-sharp"} size={14} color={txType === 'debit' ? '#ffffff' : colors.textMuted} />
+              <Text style={[styles.toggleTabText, txType === 'debit' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
+                {partyType === 'customer' ? 'GOT PAYMENT' : 'PAID SUPPLIER'}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 

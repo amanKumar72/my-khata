@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Platform, Statu
 import { useApp } from '../../store/AppContext';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../../constants/Colors';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export const PinLockScreen = () => {
   const { verifyPin, unlockApp, theme } = useApp();
@@ -39,7 +40,7 @@ export const PinLockScreen = () => {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.centerContent}>
         <View style={styles.headerGroup}>
-          <Text style={styles.lockIcon}>🔒</Text>
+          <Ionicons name="lock-closed-outline" size={40} color={colors.primary} style={{ marginBottom: 16 }} />
           <Text style={[styles.lockTitle, { color: colors.text }]}>
             Enter Security PIN
           </Text>

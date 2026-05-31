@@ -8,6 +8,9 @@ import { Button } from '../../components/Button';
 import { formatCurrency } from '../../utils/currency';
 import { formatDate } from '../../utils/date';
 import { Colors } from '../../constants/Colors';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export default function CustomersScreen() {
   const router = useRouter();
@@ -74,7 +77,7 @@ export default function CustomersScreen() {
 
         {/* Search Input */}
         <View style={[styles.searchBox, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}>
-          <Text style={styles.searchIcon}>🔍</Text>
+          <FontAwesome name="search" size={14} color={isDark ? '#464554' : '#94a3b8'} style={{ marginRight: 8 }} />
           <TextInput
             placeholder="Search Customer by name..."
             placeholderTextColor={isDark ? '#464554' : '#94a3b8'}
@@ -98,7 +101,7 @@ export default function CustomersScreen() {
             {formatCurrency(totalReceivable, currency)}
           </Text>
         </View>
-        <Text style={styles.bannerIcon}>📥</Text>
+        <Ionicons name="trending-up-sharp" size={22} color="#10b981" />
       </View>
 
       <ScrollView
@@ -109,7 +112,7 @@ export default function CustomersScreen() {
       >
         {customers.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyIcon}>👥</Text>
+            <FontAwesome5 name="users" size={32} color={colors.textMuted} style={{ marginBottom: 12 }} />
             <Text style={[styles.emptyTitle, { color: colors.text }]}>No Customers Found</Text>
             <Text style={[styles.emptySubtitle, { color: colors.textMuted }]}>
               {searchQuery ? 'Try adjusting your search query.' : 'Keep track of credits and payments. Create your first customer ledger record.'}
@@ -151,9 +154,12 @@ export default function CustomersScreen() {
                       {c.name}
                     </Text>
                     {c.phone ? (
-                      <Text style={[styles.customerPhone, { color: colors.textMuted }]}>
-                        📞 {c.phone}
-                      </Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                        <FontAwesome name="phone" size={10} color={colors.textMuted} />
+                        <Text style={[styles.customerPhone, { color: colors.textMuted, marginTop: 0 }]}>
+                          {c.phone}
+                        </Text>
+                      </View>
                     ) : null}
                     <Text style={[styles.lastActiveText, { color: colors.textMuted }]}>
                       Last Active: {c.last_transaction_date ? formatDate(c.last_transaction_date) : 'No transactions'}

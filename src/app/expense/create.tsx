@@ -8,6 +8,8 @@ import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../../constants/Colors';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function CreateExpenseScreen() {
   const router = useRouter();
@@ -150,7 +152,7 @@ export default function CreateExpenseScreen() {
       {/* Header bar */}
       <View style={[styles.header, { backgroundColor: isDark ? '#131313' : '#ffffff', borderColor: colors.border }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={[styles.backText, { color: colors.textMuted }]}>←</Text>
+          <Ionicons name="arrow-back" size={22} color={colors.text} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.text }]}>
           Record Income & Expense
@@ -164,17 +166,23 @@ export default function CreateExpenseScreen() {
             style={[styles.toggleTab, type === 'income' && { backgroundColor: '#10b981' }]}
             onPress={() => setType('income')}
           >
-            <Text style={[styles.toggleTabText, type === 'income' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-              CASH IN (Income) 📥
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Ionicons name="trending-up-sharp" size={14} color={type === 'income' ? '#ffffff' : colors.textMuted} />
+              <Text style={[styles.toggleTabText, type === 'income' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
+                CASH IN
+              </Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.toggleTab, type === 'expense' && { backgroundColor: '#ef4444' }]}
             onPress={() => setType('expense')}
           >
-            <Text style={[styles.toggleTabText, type === 'expense' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
-              CASH OUT (Expense) 📤
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Ionicons name="trending-down-sharp" size={14} color={type === 'expense' ? '#ffffff' : colors.textMuted} />
+              <Text style={[styles.toggleTabText, type === 'expense' ? { color: '#ffffff' } : { color: colors.textMuted }]}>
+                CASH OUT
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 

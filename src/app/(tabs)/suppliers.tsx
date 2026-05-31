@@ -8,6 +8,9 @@ import { Button } from '../../components/Button';
 import { formatCurrency } from '../../utils/currency';
 import { formatDate } from '../../utils/date';
 import { Colors } from '../../constants/Colors';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export default function SuppliersScreen() {
   const router = useRouter();
@@ -74,7 +77,7 @@ export default function SuppliersScreen() {
 
         {/* Search Input */}
         <View style={[styles.searchBox, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}>
-          <Text style={styles.searchIcon}>🔍</Text>
+          <FontAwesome name="search" size={14} color={isDark ? '#464554' : '#94a3b8'} style={{ marginRight: 8 }} />
           <TextInput
             placeholder="Search Supplier by name..."
             placeholderTextColor={isDark ? '#464554' : '#94a3b8'}
@@ -95,8 +98,8 @@ export default function SuppliersScreen() {
         style={[
           styles.summaryBanner, 
           { 
-            backgroundColor: isDark ? 'rgba(103, 0, 27, 0.1)' : '#fee2e2', 
-            borderColor: isDark ? 'rgba(103, 0, 27, 0.2)' : '#fecaca' 
+            backgroundColor: isDark ? 'rgba(239, 68, 68, 0.1)' : '#fee2e2', 
+            borderColor: isDark ? 'rgba(239, 68, 68, 0.2)' : '#fecaca' 
           }
         ]}
       >
@@ -106,7 +109,7 @@ export default function SuppliersScreen() {
             {formatCurrency(totalPayable, currency)}
           </Text>
         </View>
-        <Text style={styles.bannerIcon}>📤</Text>
+        <Ionicons name="trending-down-sharp" size={22} color={colors.error} />
       </View>
 
       <ScrollView
@@ -117,7 +120,7 @@ export default function SuppliersScreen() {
       >
         {suppliers.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyIcon}>📦</Text>
+            <FontAwesome5 name="box-open" size={32} color={colors.textMuted} style={{ marginBottom: 12 }} />
             <Text style={[styles.emptyTitle, { color: colors.text }]}>No Suppliers Found</Text>
             <Text style={[styles.emptySubtitle, { color: colors.textMuted }]}>
               {searchQuery ? 'Try adjusting your search query.' : 'Keep track of stock purchases and payments. Create your first supplier ledger record.'}
@@ -159,9 +162,12 @@ export default function SuppliersScreen() {
                       {s.name}
                     </Text>
                     {s.phone ? (
-                      <Text style={[styles.supplierPhone, { color: colors.textMuted }]}>
-                        📞 {s.phone}
-                      </Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                        <FontAwesome name="phone" size={10} color={colors.textMuted} />
+                        <Text style={[styles.supplierPhone, { color: colors.textMuted, marginTop: 0 }]}>
+                          {s.phone}
+                        </Text>
+                      </View>
                     ) : null}
                     <Text style={[styles.lastActiveText, { color: colors.textMuted }]}>
                       Last Active: {s.last_transaction_date ? formatDate(s.last_transaction_date) : 'No transactions'}
