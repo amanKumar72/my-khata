@@ -21,7 +21,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 export default function SupplierProfileScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { theme, currency, selectedStoreId } = useApp();
+  const { theme, currency, selectedStoreId, stores } = useApp();
   const isDark = theme === 'dark';
   const colors = isDark ? Colors.dark : Colors.light;
 
@@ -282,6 +282,25 @@ export default function SupplierProfileScreen() {
     }
   };
 
+  const handleExportPDF = async () => {
+    if (!supplier) return;
+    try {
+      const storeName = stores.find(s => s.id === selectedStoreId)?.name || 'My Business Store';
+      await exportService.exportSupplierLedgerToPDF(storeName, supplier, transactions, currency);
+      Toast.show({
+        type: 'success',
+        text1: 'PDF Generated',
+        text2: 'Statement exported successfully',
+      });
+    } catch (e) {
+      Toast.show({
+        type: 'error',
+        text1: 'Export Failed',
+        text2: 'Could not generate PDF statement',
+      });
+    }
+  };
+
   if (isLoading && !supplier) {
     return (
       <SafeAreaView style={[styles.container, styles.center, { backgroundColor: colors.background }]}>
@@ -307,7 +326,7 @@ export default function SupplierProfileScreen() {
       <View style={[styles.header, { backgroundColor: isDark ? '#131313' : '#ffffff', borderColor: colors.border }]}>
         <View style={styles.headerLeft}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-            <Text style={[styles.backText, { color: colors.textMuted }]}>←</Text>
+            <Ionicons name="arrow-back" size={22} color={colors.text} />
           </TouchableOpacity>
           <View>
             <Text style={[styles.headerTitle, { color: colors.text }]}>
@@ -322,6 +341,9 @@ export default function SupplierProfileScreen() {
         <View style={styles.headerRight}>
           <TouchableOpacity onPress={handleOpenEditModal} style={styles.headerActionBtn}>
             <FontAwesome name="pencil" size={16} color={colors.text} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleExportPDF} style={styles.headerActionBtn}>
+            <FontAwesome name="file-pdf-o" size={16} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleShareStatement} style={styles.headerActionBtn}>
             <FontAwesome name="share-alt" size={16} color={colors.text} />

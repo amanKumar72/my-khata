@@ -15,11 +15,12 @@ import { formatDate, formatTime } from '../../utils/date';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { exportService } from '../../services/exportService';
 
 type PeriodType = 'day' | 'week' | 'month' | 'year';
 
 export default function ReportsScreen() {
-  const { theme, currency, selectedStoreId } = useApp();
+  const { theme, currency, selectedStoreId, stores } = useApp();
   const isDark = theme === 'dark';
   const colors = isDark ? Colors.dark : Colors.light;
 
@@ -31,6 +32,24 @@ export default function ReportsScreen() {
   
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  const handleExportPDF = async () => {
+    try {
+      const storeName = stores.find(s => s.id === selectedStoreId)?.name || 'My Business Store';
+      await exportService.exportCashBookToPDF(storeName, cashHistory, currency);
+      Toast.show({
+        type: 'success',
+        text1: 'PDF Statement Exported',
+        text2: 'Cash Book statement has been generated successfully',
+      });
+    } catch (e) {
+      Toast.show({
+        type: 'error',
+        text1: 'Export Failed',
+        text2: 'Could not generate PDF statement',
+      });
+    }
+  };
 
   // Edit Expense States
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -206,9 +225,14 @@ export default function ReportsScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header with timespan controls */}
       <View style={[styles.header, { backgroundColor: isDark ? '#131313' : '#ffffff', borderColor: colors.border }]}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>
-          Business Statements
-        </Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <Text style={[styles.headerTitle, { color: colors.text, marginBottom: 0 }]}>
+            Business Statements
+          </Text>
+          <TouchableOpacity onPress={handleExportPDF} style={{ padding: 8 }}>
+            <FontAwesome name="file-pdf-o" size={18} color={colors.text} />
+          </TouchableOpacity>
+        </View>
 
         {/* Tab timespan selector */}
         <View style={[styles.tabsWrapper, { backgroundColor: isDark ? '#171717' : '#e2e8f0' }]}>

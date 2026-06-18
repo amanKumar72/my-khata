@@ -11,14 +11,34 @@ import { Colors } from '../../constants/Colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Toast from 'react-native-toast-message';
+import { exportService } from '../../services/exportService';
 
 export default function SuppliersScreen() {
   const router = useRouter();
-  const { theme, currency, selectedStoreId } = useApp();
+  const { theme, currency, selectedStoreId, stores } = useApp();
   const isDark = theme === 'dark';
   const colors = isDark ? Colors.dark : Colors.light;
 
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+
+  const handleExportPDF = async () => {
+    try {
+      const storeName = stores.find(s => s.id === selectedStoreId)?.name || 'My Business Store';
+      await exportService.exportAllSuppliersToPDF(storeName, suppliers, currency);
+      Toast.show({
+        type: 'success',
+        text1: 'PDF Exported',
+        text2: 'Supplier summary ledger sheet generated successfully',
+      });
+    } catch (e) {
+      Toast.show({
+        type: 'error',
+        text1: 'Export Failed',
+        text2: 'Could not generate PDF summary',
+      });
+    }
+  };
   const [searchQuery, setSearchQuery] = useState('');
   const [totalPayable, setTotalPayable] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,11 +88,16 @@ export default function SuppliersScreen() {
           <Text style={[styles.headerTitle, { color: colors.text }]}>
             Suppliers Ledger
           </Text>
-          <Button
-            title="+ Add Supplier"
-            onPress={() => router.push('/supplier/create')}
-            style={styles.addButton}
-          />
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <TouchableOpacity onPress={handleExportPDF} style={{ padding: 8 }}>
+              <FontAwesome name="file-pdf-o" size={18} color={colors.text} />
+            </TouchableOpacity>
+            <Button
+              title="+ Add Supplier"
+              onPress={() => router.push('/supplier/create')}
+              style={styles.addButton}
+            />
+          </View>
         </View>
 
         {/* Search Input */}
