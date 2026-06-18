@@ -48,21 +48,41 @@ export const Button: React.FC<ButtonProps> = ({
     return base;
   };
 
-  const getTextStyles = () => {
-    const base: any[] = [styles.text];
-    if (variant === 'primary') {
-      if (isDark) {
-        base.push({ color: '#1000a9' });
-      } else {
-        base.push({ color: '#ffffff' });
-      }
-    } else if (variant === 'secondary') {
-      base.push({ color: colors.text });
-    } else if (variant === 'ghost') {
-      base.push({ color: colors.textMuted });
+  // Dynamically calculate the text color based on the actual background color (including overrides)
+  const flattenedStyle = StyleSheet.flatten([getButtonStyles(), style]) || {};
+  const finalBgColor = flattenedStyle.backgroundColor;
+
+  const isLightColor = (color: string) => {
+    if (!color) return false;
+    const hex = color.replace('#', '');
+    let r = 0, g = 0, b = 0;
+    if (hex.length === 3) {
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    } else {
+      return false;
     }
-    return base;
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 150;
   };
+
+  const getTextColor = () => {
+    if (variant === 'primary') {
+      return isLightColor(finalBgColor) ? '#000000' : '#ffffff';
+    } else if (variant === 'secondary') {
+      return colors.text;
+    } else if (variant === 'ghost') {
+      return colors.textMuted;
+    }
+    return colors.text;
+  };
+
+  const textColor = getTextColor();
 
   return (
     <TouchableOpacity
@@ -72,11 +92,11 @@ export const Button: React.FC<ButtonProps> = ({
       style={[getButtonStyles(), style]}
     >
       {loading ? (
-        <ActivityIndicator color={isDark && variant === 'primary' ? '#1000a9' : '#fff'} size="small" />
+        <ActivityIndicator color={textColor} size="small" />
       ) : (
         <View style={styles.contentRow}>
           {icon && <View style={styles.iconContainer}>{icon}</View>}
-          <Text style={getTextStyles()}>{title}</Text>
+          <Text style={[styles.text, { color: textColor }]}>{title}</Text>
         </View>
       )}
     </TouchableOpacity>

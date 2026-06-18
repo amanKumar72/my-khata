@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import { Colors } from '../../constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { CustomDatePicker } from '../../components/CustomDatePicker';
 
 export default function CreateExpenseScreen() {
   const router = useRouter();
@@ -26,6 +27,8 @@ export default function CreateExpenseScreen() {
   const [category, setCategory] = useState('');
   const [note, setNote] = useState('');
   const [loading, setLoading] = useState(false);
+  const [exDate, setExDate] = useState<string>(new Date().toISOString());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Categories loading
   const [categories, setCategories] = useState<Category[]>([]);
@@ -88,7 +91,8 @@ export default function CreateExpenseScreen() {
         title.trim(),
         parsedAmount,
         type,
-        note.trim()
+        note.trim(),
+        exDate
       );
 
       Toast.show({
@@ -264,6 +268,19 @@ export default function CreateExpenseScreen() {
             )}
           </View>
 
+          <TouchableOpacity 
+            onPress={() => setShowDatePicker(true)}
+            style={[styles.dateSelectorRow, { backgroundColor: isDark ? '#171717' : '#f8fafc', borderColor: colors.border }]}
+          >
+            <View>
+              <Text style={[styles.dateSelectorLabel, { color: colors.textMuted }]}>Transaction Date</Text>
+              <Text style={[styles.dateSelectorValue, { color: colors.text }]}>
+                {exDate ? new Date(exDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+              </Text>
+            </View>
+            <FontAwesome name="calendar" size={16} color={colors.primary} />
+          </TouchableOpacity>
+
           <Input
             label="Additional Notes"
             value={note}
@@ -271,6 +288,13 @@ export default function CreateExpenseScreen() {
             placeholder="Reference information or transaction details"
           />
         </Card>
+
+        <CustomDatePicker
+          visible={showDatePicker}
+          value={exDate ? new Date(exDate) : new Date()}
+          onClose={() => setShowDatePicker(false)}
+          onSelect={(d) => setExDate(d.toISOString())}
+        />
 
         <Button
           title={type === 'expense' ? 'SAVE CASH OUT (Expense)' : 'SAVE CASH IN (Income)'}
@@ -479,5 +503,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
+  },
+  dateSelectorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 20,
+    width: '100%',
+  },
+  dateSelectorLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  dateSelectorValue: {
+    fontSize: 13,
+    fontWeight: '700',
   },
 });

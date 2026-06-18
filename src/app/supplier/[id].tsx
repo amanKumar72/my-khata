@@ -17,6 +17,7 @@ import { Colors } from '../../constants/Colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { CustomDatePicker } from '../../components/CustomDatePicker';
 
 export default function SupplierProfileScreen() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function SupplierProfileScreen() {
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
   const [txDate, setTxDate] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Edit Profile modal states
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -85,12 +87,15 @@ export default function SupplierProfileScreen() {
   const [editTxAmount, setEditTxAmount] = useState('');
   const [editTxNote, setEditTxNote] = useState('');
   const [editTxType, setEditTxType] = useState<TransactionType>('credit');
+  const [editTxDate, setEditTxDate] = useState('');
+  const [showEditDatePicker, setShowEditDatePicker] = useState(false);
 
   const handleOpenEditTxModal = (tx: Transaction) => {
     setSelectedTx(tx);
     setEditTxAmount(tx.amount.toString());
     setEditTxNote(tx.note || '');
     setEditTxType(tx.type);
+    setEditTxDate(tx.created_at);
     setEditTxModalVisible(true);
   };
 
@@ -107,7 +112,7 @@ export default function SupplierProfileScreen() {
     }
 
     try {
-      await transactionRepo.update(selectedTx.id, parsedAmount, editTxNote.trim(), editTxType);
+      await transactionRepo.update(selectedTx.id, parsedAmount, editTxNote.trim(), editTxType, editTxDate);
       setEditTxModalVisible(false);
       setSelectedTx(null);
       Toast.show({
@@ -558,6 +563,26 @@ export default function SupplierProfileScreen() {
               placeholder="e.g. Purchased wholesale inventory"
             />
 
+            <TouchableOpacity 
+              onPress={() => setShowDatePicker(true)}
+              style={[styles.dateSelectorRow, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}
+            >
+              <View>
+                <Text style={[styles.dateSelectorLabel, { color: colors.textMuted }]}>Transaction Date</Text>
+                <Text style={[styles.dateSelectorValue, { color: colors.text }]}>
+                  {txDate ? new Date(txDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+                </Text>
+              </View>
+              <FontAwesome name="calendar" size={16} color={colors.primary} />
+            </TouchableOpacity>
+
+            <CustomDatePicker
+              visible={showDatePicker}
+              value={txDate ? new Date(txDate) : new Date()}
+              onClose={() => setShowDatePicker(false)}
+              onSelect={(d) => setTxDate(d.toISOString())}
+            />
+
             <Button
               title={txType === 'credit' ? 'PURCHASED STOCK' : 'PAID SUPPLIER'}
               onPress={handleSaveTransaction}
@@ -686,6 +711,26 @@ export default function SupplierProfileScreen() {
               value={editTxNote}
               onChangeText={setEditTxNote}
               placeholder="e.g. Purchased wholesale inventory"
+            />
+
+            <TouchableOpacity 
+              onPress={() => setShowEditDatePicker(true)}
+              style={[styles.dateSelectorRow, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}
+            >
+              <View>
+                <Text style={[styles.dateSelectorLabel, { color: colors.textMuted }]}>Transaction Date</Text>
+                <Text style={[styles.dateSelectorValue, { color: colors.text }]}>
+                  {editTxDate ? new Date(editTxDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+                </Text>
+              </View>
+              <FontAwesome name="calendar" size={16} color={colors.primary} />
+            </TouchableOpacity>
+
+            <CustomDatePicker
+              visible={showEditDatePicker}
+              value={editTxDate ? new Date(editTxDate) : new Date()}
+              onClose={() => setShowEditDatePicker(false)}
+              onSelect={(d) => setEditTxDate(d.toISOString())}
             />
 
             <Button
@@ -961,5 +1006,25 @@ const styles = StyleSheet.create({
   },
   sheetGap: {
     height: 12,
+  },
+  dateSelectorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 20,
+    width: '100%',
+  },
+  dateSelectorLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  dateSelectorValue: {
+    fontSize: 13,
+    fontWeight: '700',
   },
 });

@@ -16,6 +16,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
+import { CustomDatePicker } from '../../components/CustomDatePicker';
+
 export default function CreateTransactionScreen() {
   const router = useRouter();
   const { theme, currency, selectedStoreId } = useApp();
@@ -36,6 +38,8 @@ export default function CreateTransactionScreen() {
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
   const [loading, setLoading] = useState(false);
+  const [txDate, setTxDate] = useState<string>(new Date().toISOString());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
     const fetchParties = async () => {
@@ -87,7 +91,8 @@ export default function CreateTransactionScreen() {
         partyType,
         txType,
         parsedAmount,
-        note.trim()
+        note.trim(),
+        txDate
       );
 
 
@@ -275,7 +280,27 @@ export default function CreateTransactionScreen() {
             onChangeText={setNote}
             placeholder="e.g. Sales Invoice #4021"
           />
+          
+          <TouchableOpacity 
+            onPress={() => setShowDatePicker(true)}
+            style={[styles.dateSelectorRow, { backgroundColor: isDark ? '#171717' : '#f8fafc', borderColor: colors.border }]}
+          >
+            <View>
+              <Text style={[styles.dateSelectorLabel, { color: colors.textMuted }]}>Transaction Date</Text>
+              <Text style={[styles.dateSelectorValue, { color: colors.text }]}>
+                {txDate ? new Date(txDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+              </Text>
+            </View>
+            <FontAwesome name="calendar" size={16} color={colors.primary} />
+          </TouchableOpacity>
         </Card>
+
+        <CustomDatePicker
+          visible={showDatePicker}
+          value={txDate ? new Date(txDate) : new Date()}
+          onClose={() => setShowDatePicker(false)}
+          onSelect={(d) => setTxDate(d.toISOString())}
+        />
 
         <Button
           title="Save Ledger Transaction"
@@ -464,5 +489,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
+  },
+  dateSelectorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginTop: 16,
+    width: '100%',
+  },
+  dateSelectorLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  dateSelectorValue: {
+    fontSize: 13,
+    fontWeight: '700',
   },
 });

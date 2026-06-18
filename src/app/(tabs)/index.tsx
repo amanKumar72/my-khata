@@ -16,6 +16,7 @@ import Toast from 'react-native-toast-message';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { CustomDatePicker } from '../../components/CustomDatePicker';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -37,6 +38,8 @@ export default function DashboardScreen() {
   const [editCategory, setEditCategory] = useState('');
   const [editType, setEditType] = useState<ExpenseType>('expense');
   const [editNote, setEditNote] = useState('');
+  const [editDate, setEditDate] = useState<string>(new Date().toISOString());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
 
   const fetchDashboardData = useCallback(async () => {
@@ -66,6 +69,7 @@ export default function DashboardScreen() {
     setEditCategory(expense.category);
     setEditType(expense.type);
     setEditNote(expense.note || '');
+    setEditDate(expense.created_at);
     
     // Fetch categories for this type
     try {
@@ -116,7 +120,7 @@ export default function DashboardScreen() {
         parsedAmount,
         editType,
         editNote.trim(),
-        selectedExpense.created_at
+        editDate
       );
       setEditModalVisible(false);
       setSelectedExpense(null);
@@ -517,6 +521,26 @@ export default function DashboardScreen() {
               </View>
             </View>
 
+            <TouchableOpacity 
+              onPress={() => setShowDatePicker(true)}
+              style={[styles.dateSelectorRow, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}
+            >
+              <View>
+                <Text style={[styles.dateSelectorLabel, { color: colors.textMuted }]}>Transaction Date</Text>
+                <Text style={[styles.dateSelectorValue, { color: colors.text }]}>
+                  {editDate ? new Date(editDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+                </Text>
+              </View>
+              <FontAwesome name="calendar" size={16} color={colors.primary} />
+            </TouchableOpacity>
+
+            <CustomDatePicker
+              visible={showDatePicker}
+              value={editDate ? new Date(editDate) : new Date()}
+              onClose={() => setShowDatePicker(false)}
+              onSelect={(d) => setEditDate(d.toISOString())}
+            />
+
             <Input
               label="Note / Remarks"
               value={editNote}
@@ -862,6 +886,26 @@ const styles = StyleSheet.create({
   },
   catBadgeText: {
     fontSize: 11,
+    fontWeight: '700',
+  },
+  dateSelectorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 20,
+    width: '100%',
+  },
+  dateSelectorLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  dateSelectorValue: {
+    fontSize: 13,
     fontWeight: '700',
   },
 });
