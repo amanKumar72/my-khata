@@ -11,7 +11,7 @@ import { Colors } from '../../constants/Colors';
 import Toast from 'react-native-toast-message';
 import { expenseRepo } from '../../repositories/expenseRepo';
 import { Expense, Category, ExpenseType } from '../../types';
-import { formatDate, formatTime } from '../../utils/date';
+import { formatDate, formatTime, getStartAndEndDates } from '../../utils/date';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -64,18 +64,29 @@ export default function ReportsScreen() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
 
+  // Reports Date Filtering States
+  const [reportDate, setReportDate] = useState<Date>(new Date());
+  const [showReportDatePicker, setShowReportDatePicker] = useState(false);
+
   const fetchReportData = useCallback(async () => {
     if (!selectedStoreId) return;
     try {
       setIsLoading(true);
-      const rep = await reportService.getPeriodicReport(selectedStoreId, period);
+      const rep = await reportService.getPeriodicReport(selectedStoreId, period, reportDate);
       setReport(rep);
 
-      const breakdown = await reportService.getCategoryReport(selectedStoreId, breakdownType, period);
+      const breakdown = await reportService.getCategoryReport(selectedStoreId, breakdownType, period, reportDate);
       setCategoriesBreakdown(breakdown);
 
       const history = await expenseRepo.getAll(selectedStoreId);
-      setCashHistory(history);
+      const dates = getStartAndEndDates(period, reportDate);
+      const startMs = dates.start.getTime();
+      const endMs = dates.end.getTime();
+      const filteredHistory = history.filter(item => {
+        const itemTime = new Date(item.created_at).getTime();
+        return itemTime >= startMs && itemTime <= endMs;
+      });
+      setCashHistory(filteredHistory);
 
       const cats = await expenseRepo.getCategories(selectedStoreId, editType);
       setCategories(cats);
@@ -90,7 +101,7 @@ export default function ReportsScreen() {
       setIsLoading(false);
       setRefreshing(false);
     }
-  }, [selectedStoreId, period, breakdownType, editType]);
+  }, [selectedStoreId, period, breakdownType, editType, reportDate]);
 
   const handleOpenEditModal = async (expense: Expense) => {
     setSelectedExpense(expense);
@@ -216,12 +227,24 @@ export default function ReportsScreen() {
     fetchReportData();
   };
 
+  const handlePeriodTabPress = (p: PeriodType) => {
+    setPeriod(p);
+    setShowReportDatePicker(true);
+  };
+
   const getPeriodLabel = () => {
+    const dates = getStartAndEndDates(period, reportDate);
     switch (period) {
-      case 'day': return 'Today';
-      case 'week': return 'This Week';
-      case 'month': return 'This Month';
-      case 'year': return 'This Year';
+      case 'day':
+        return reportDate.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      case 'week':
+        const startStr = dates.start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        const endStr = dates.end.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        return `${startStr} - ${endStr}`;
+      case 'month':
+        return reportDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long' });
+      case 'year':
+        return reportDate.getFullYear().toString();
     }
   };
 
@@ -245,7 +268,7 @@ export default function ReportsScreen() {
             return (
               <TouchableOpacity
                 key={p}
-                onPress={() => setPeriod(p)}
+                onPress={() => handlePeriodTabPress(p)}
                 style={[styles.tabBtn, isActive && [styles.tabBtnActive, { backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }]]}
               >
                 <Text style={[styles.tabBtnText, { color: isActive ? colors.text : colors.textMuted }]}>
@@ -255,7 +278,28 @@ export default function ReportsScreen() {
             );
           })}
         </View>
+
+        {/* Active timespan display with calendar toggle */}
+        <TouchableOpacity 
+          onPress={() => setShowReportDatePicker(true)}
+          style={[styles.dateFilterRow, { backgroundColor: isDark ? '#171717' : '#f8fafc', borderColor: colors.border }]}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <FontAwesome name="calendar" size={12} color={colors.primary} />
+            <Text style={[styles.dateFilterText, { color: colors.text, fontSize: 11, fontWeight: '700' }]}>
+              {getPeriodLabel()}
+            </Text>
+          </View>
+          <FontAwesome name="chevron-down" size={10} color={colors.textMuted} />
+        </TouchableOpacity>
       </View>
+
+      <CustomDatePicker
+        visible={showReportDatePicker}
+        value={reportDate}
+        onClose={() => setShowReportDatePicker(false)}
+        onSelect={(d) => setReportDate(d)}
+      />
 
       <ScrollView
         style={styles.scrollContainer}
@@ -933,5 +977,19 @@ const styles = StyleSheet.create({
   dateSelectorValue: {
     fontSize: 13,
     fontWeight: '700',
+  },
+  dateFilterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginTop: 10,
+    width: '100%',
+  },
+  dateFilterText: {
+    fontSize: 11,
   },
 });

@@ -60,10 +60,9 @@ export const getDayLabel = (dateString: string): string => {
   }
 };
 
-export const getStartAndEndDates = (period: 'day' | 'week' | 'month' | 'year' | 'all') => {
-  const now = new Date();
-  const start = new Date();
-  const end = new Date();
+export const getStartAndEndDates = (period: 'day' | 'week' | 'month' | 'year' | 'all', refDate: Date = new Date()) => {
+  const start = new Date(refDate);
+  const end = new Date(refDate);
 
   switch (period) {
     case 'day':
@@ -72,15 +71,19 @@ export const getStartAndEndDates = (period: 'day' | 'week' | 'month' | 'year' | 
       break;
     case 'week':
       // Get first day of week (Sunday)
-      const day = now.getDay();
-      start.setDate(now.getDate() - day);
+      const day = start.getDay();
+      start.setDate(start.getDate() - day);
       start.setHours(0, 0, 0, 0);
+      
+      // End date is start date + 6 days
+      end.setTime(start.getTime());
+      end.setDate(start.getDate() + 6);
       end.setHours(23, 59, 59, 999);
       break;
     case 'month':
       start.setDate(1);
       start.setHours(0, 0, 0, 0);
-      end.setMonth(now.getMonth() + 1);
+      end.setMonth(start.getMonth() + 1);
       end.setDate(0);
       end.setHours(23, 59, 59, 999);
       break;

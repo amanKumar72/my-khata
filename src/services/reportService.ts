@@ -94,7 +94,8 @@ export const reportService = {
    */
   async getPeriodicReport(
     storeId: string,
-    period: 'day' | 'week' | 'month' | 'year' | 'all'
+    period: 'day' | 'week' | 'month' | 'year' | 'all',
+    refDate?: Date
   ): Promise<PeriodicReport> {
     // Database self-healing: Clean up any orphaned transactions and auto-created expenses
     await executeSql(`
@@ -114,7 +115,7 @@ export const reportService = {
          OR title LIKE 'Payment Made%';
     `);
 
-    const dates = getStartAndEndDates(period);
+    const dates = getStartAndEndDates(period, refDate);
     const startStr = dates.start.toISOString();
     const endStr = dates.end.toISOString();
 
@@ -156,9 +157,10 @@ export const reportService = {
   async getCategoryReport(
     storeId: string,
     type: 'income' | 'expense',
-    period: 'day' | 'week' | 'month' | 'year' | 'all'
+    period: 'day' | 'week' | 'month' | 'year' | 'all',
+    refDate?: Date
   ): Promise<{ category: string; amount: number; percentage: number }[]> {
-    const dates = getStartAndEndDates(period);
+    const dates = getStartAndEndDates(period, refDate);
     const startStr = dates.start.toISOString();
     const endStr = dates.end.toISOString();
 
