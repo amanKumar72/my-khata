@@ -300,6 +300,7 @@ export default function ReportsScreen() {
         value={reportDate}
         onClose={() => setShowReportDatePicker(false)}
         onSelect={(d) => setReportDate(d)}
+        mode={period}
       />
 
       <ScrollView

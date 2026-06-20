@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Colors } from '../constants/Colors';
@@ -9,6 +9,7 @@ interface CustomDatePickerProps {
   value: Date;
   onClose: () => void;
   onSelect: (date: Date) => void;
+  mode?: 'day' | 'week' | 'month' | 'year';
 }
 
 export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
@@ -16,13 +17,24 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   value,
   onClose,
   onSelect,
+  mode = 'day',
 }) => {
   const { theme } = useApp();
   const isDark = theme === 'dark';
   const colors = isDark ? Colors.dark : Colors.light;
 
-  // Track the viewed month/year in the calendar calendar state
+  // Track the viewed month/year in the calendar state
   const [currentDate, setCurrentDate] = useState(new Date(value));
+  // Year selector pagination center
+  const [yearPageCenter, setYearPageCenter] = useState(value.getFullYear());
+
+  useEffect(() => {
+    if (visible) {
+      const parsedValue = value ? new Date(value) : new Date();
+      setCurrentDate(parsedValue);
+      setYearPageCenter(parsedValue.getFullYear());
+    }
+  }, [visible, value]);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -56,8 +68,28 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
     setCurrentDate(new Date(year, month + 1, 1));
   };
 
+  const handlePrevYear = () => {
+    setCurrentDate(new Date(year - 1, month, 1));
+  };
+
+  const handleNextYear = () => {
+    setCurrentDate(new Date(year + 1, month, 1));
+  };
+
   const handleSelectDay = (day: number) => {
     const selected = new Date(year, month, day, 12, 0, 0); // set to mid-day to avoid timezone offsets
+    onSelect(selected);
+    onClose();
+  };
+
+  const handleSelectMonth = (monthIdx: number) => {
+    const selected = new Date(year, monthIdx, 1, 12, 0, 0);
+    onSelect(selected);
+    onClose();
+  };
+
+  const handleSelectYear = (yearVal: number) => {
+    const selected = new Date(yearVal, 0, 1, 12, 0, 0);
     onSelect(selected);
     onClose();
   };
@@ -66,6 +98,179 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+
+  const monthsAbbr = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
+  const renderContent = () => {
+    if (mode === 'month') {
+      return (
+        <>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={handlePrevYear} style={styles.navBtn}>
+              <FontAwesome name="chevron-left" size={14} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={[styles.headerTitle, { color: colors.text }]}>
+              {year}
+            </Text>
+            <TouchableOpacity onPress={handleNextYear} style={styles.navBtn}>
+              <FontAwesome name="chevron-right" size={14} color={colors.text} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Month grid */}
+          <View style={styles.monthsGrid}>
+            {monthsAbbr.map((m, idx) => {
+              const isSelected = value.getMonth() === idx && value.getFullYear() === year;
+              const isThisMonth = new Date().getMonth() === idx && new Date().getFullYear() === year;
+
+              return (
+                <TouchableOpacity
+                  key={idx}
+                  onPress={() => handleSelectMonth(idx)}
+                  style={[
+                    styles.monthCell,
+                    isThisMonth && { borderColor: colors.primary, borderWidth: 1.5 },
+                    isSelected && { backgroundColor: colors.primary, borderColor: colors.primary }
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.monthText,
+                      { color: colors.text },
+                      isSelected && { color: isDark ? '#1000a9' : '#ffffff', fontWeight: '800' }
+                    ]}
+                  >
+                    {m}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </>
+      );
+    }
+
+    if (mode === 'year') {
+      return (
+        <>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => setYearPageCenter(prev => prev - 12)} style={styles.navBtn}>
+              <FontAwesome name="chevron-left" size={14} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={[styles.headerTitle, { color: colors.text }]}>
+              Select Year
+            </Text>
+            <TouchableOpacity onPress={() => setYearPageCenter(prev => prev + 12)} style={styles.navBtn}>
+              <FontAwesome name="chevron-right" size={14} color={colors.text} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Years grid */}
+          <View style={styles.monthsGrid}>
+            {Array.from({ length: 12 }, (_, i) => yearPageCenter - 5 + i).map((y) => {
+              const isSelected = value.getFullYear() === y;
+              const isThisYear = new Date().getFullYear() === y;
+
+              return (
+                <TouchableOpacity
+                  key={y}
+                  onPress={() => handleSelectYear(y)}
+                  style={[
+                    styles.monthCell,
+                    isThisYear && { borderColor: colors.primary, borderWidth: 1.5 },
+                    isSelected && { backgroundColor: colors.primary, borderColor: colors.primary }
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.monthText,
+                      { color: colors.text },
+                      isSelected && { color: isDark ? '#1000a9' : '#ffffff', fontWeight: '800' }
+                    ]}
+                  >
+                    {y}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </>
+      );
+    }
+
+    // Default 'day' and 'week' calendar mode
+    return (
+      <>
+        {/* Calendar Header */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handlePrevMonth} style={styles.navBtn}>
+            <FontAwesome name="chevron-left" size={14} color={colors.text} />
+          </TouchableOpacity>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>
+            {monthNames[month]} {year}
+          </Text>
+          <TouchableOpacity onPress={handleNextMonth} style={styles.navBtn}>
+            <FontAwesome name="chevron-right" size={14} color={colors.text} />
+          </TouchableOpacity>
+        </View>
+
+        {/* Weekday Labels */}
+        <View style={styles.weekLabelsRow}>
+          {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, index) => (
+            <Text key={index} style={[styles.weekLabelText, { color: colors.textMuted }]}>
+              {d}
+            </Text>
+          ))}
+        </View>
+
+        {/* Days Grid */}
+        <View style={styles.daysGrid}>
+          {daysArray.map((day, idx) => {
+            if (day === null) {
+              return <View key={idx} style={styles.dayCellEmpty} />;
+            }
+
+            const isSelected = 
+              value.getDate() === day &&
+              value.getMonth() === month &&
+              value.getFullYear() === year;
+
+            const isToday = 
+              new Date().getDate() === day &&
+              new Date().getMonth() === month &&
+              new Date().getFullYear() === year;
+
+            return (
+              <TouchableOpacity
+                key={idx}
+                onPress={() => handleSelectDay(day)}
+                style={[
+                  styles.dayCell,
+                  isToday && { borderColor: colors.primary, borderWidth: 1.5 },
+                  isSelected && { backgroundColor: colors.primary, borderColor: colors.primary }
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.dayText,
+                    { color: colors.text },
+                    isSelected && { color: isDark ? '#1000a9' : '#ffffff', fontWeight: '800' }
+                  ]}
+                >
+                  {day}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </>
+    );
+  };
 
   return (
     <Modal
@@ -85,68 +290,7 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
           ]} 
           onPress={e => e.stopPropagation()}
         >
-          {/* Calendar Header */}
-          <View style={styles.header}>
-            <TouchableOpacity onPress={handlePrevMonth} style={styles.navBtn}>
-              <FontAwesome name="chevron-left" size={14} color={colors.text} />
-            </TouchableOpacity>
-            <Text style={[styles.headerTitle, { color: colors.text }]}>
-              {monthNames[month]} {year}
-            </Text>
-            <TouchableOpacity onPress={handleNextMonth} style={styles.navBtn}>
-              <FontAwesome name="chevron-right" size={14} color={colors.text} />
-            </TouchableOpacity>
-          </View>
-
-          {/* Weekday Labels */}
-          <View style={styles.weekLabelsRow}>
-            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, index) => (
-              <Text key={index} style={[styles.weekLabelText, { color: colors.textMuted }]}>
-                {d}
-              </Text>
-            ))}
-          </View>
-
-          {/* Days Grid */}
-          <View style={styles.daysGrid}>
-            {daysArray.map((day, idx) => {
-              if (day === null) {
-                return <View key={idx} style={styles.dayCellEmpty} />;
-              }
-
-              const isSelected = 
-                value.getDate() === day &&
-                value.getMonth() === month &&
-                value.getFullYear() === year;
-
-              const isToday = 
-                new Date().getDate() === day &&
-                new Date().getMonth() === month &&
-                new Date().getFullYear() === year;
-
-              return (
-                <TouchableOpacity
-                  key={idx}
-                  onPress={() => handleSelectDay(day)}
-                  style={[
-                    styles.dayCell,
-                    isToday && { borderColor: colors.primary, borderWidth: 1.5 },
-                    isSelected && { backgroundColor: colors.primary, borderColor: colors.primary }
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.dayText,
-                      { color: colors.text },
-                      isSelected && { color: isDark ? '#1000a9' : '#ffffff', fontWeight: '800' }
-                    ]}
-                  >
-                    {day}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+          {renderContent()}
 
           <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
             <Text style={{ color: colors.primary, fontWeight: '700', fontSize: 13 }}>Cancel</Text>
@@ -224,6 +368,24 @@ const styles = StyleSheet.create({
   },
   dayText: {
     fontSize: 12,
+    fontWeight: '600',
+  },
+  monthsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  monthCell: {
+    width: '30%',
+    height: 48,
+    marginVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+  },
+  monthText: {
+    fontSize: 13,
     fontWeight: '600',
   },
   closeBtn: {
