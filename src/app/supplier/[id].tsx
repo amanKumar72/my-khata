@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, TextInput, Alert, StyleSheet, Platform, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Modal, TextInput, Alert, StyleSheet, Platform, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useApp } from '../../store/AppContext';
 import { supplierRepo } from '../../repositories/supplierRepo';
@@ -749,7 +750,6 @@ export default function SupplierProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   center: {
     alignItems: 'center',
