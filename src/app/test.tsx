@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TestStyleSheetScreen() {
   const router = useRouter();
@@ -59,13 +59,13 @@ export default function TestStyleSheetScreen() {
           <TouchableOpacity style={[styles.button, styles.primaryButton]}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
               <Ionicons name="trending-down-sharp" size={14} color="#ffffff" />
-              <Text style={styles.primaryButtonText}>GIVE CREDIT</Text>
+              <Text style={styles.primaryButtonText}>YOU GAVE</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.button, styles.successButton]}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
               <Ionicons name="trending-up-sharp" size={14} color="#ffffff" />
-              <Text style={styles.successButtonText}>GET PAYMENT</Text>
+              <Text style={styles.successButtonText}>YOU GOT</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -105,7 +105,7 @@ export default function TestStyleSheetScreen() {
           </View>
         </View>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.backToHomeButton}
           onPress={() => router.replace('/(tabs)')}
         >

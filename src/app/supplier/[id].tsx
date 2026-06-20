@@ -1,24 +1,23 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Modal, TextInput, Alert, StyleSheet, Platform, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useApp } from '../../store/AppContext';
+import React, { useCallback, useState } from 'react';
+import { Alert, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { Button } from '../../components/Button';
+import { Card } from '../../components/Card';
+import { CustomDatePicker } from '../../components/CustomDatePicker';
+import { Input } from '../../components/Input';
+import { Colors } from '../../constants/Colors';
 import { supplierRepo } from '../../repositories/supplierRepo';
 import { transactionRepo } from '../../repositories/transactionRepo';
-import { expenseRepo } from '../../repositories/expenseRepo';
 import { exportService } from '../../services/exportService';
+import { useApp } from '../../store/AppContext';
 import { Supplier, Transaction, TransactionType } from '../../types';
-import { Card } from '../../components/Card';
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
 import { formatCurrency } from '../../utils/currency';
-import { formatDate, getDayLabel, formatTime } from '../../utils/date';
-import Toast from 'react-native-toast-message';
-import { Colors } from '../../constants/Colors';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { CustomDatePicker } from '../../components/CustomDatePicker';
+import { formatTime, getDayLabel } from '../../utils/date';
 
 export default function SupplierProfileScreen() {
   const router = useRouter();
@@ -165,8 +164,8 @@ export default function SupplierProfileScreen() {
       `Are you sure you want to delete ${supplier.name}? This will delete all their transaction records.`,
       [
         { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Delete', 
+        {
+          text: 'Delete',
           style: 'destructive',
           onPress: async () => {
             await supplierRepo.delete(supplier.id);
@@ -211,7 +210,7 @@ export default function SupplierProfileScreen() {
         note.trim(),
         txDate
       );
-      
+
       setModalVisible(false);
       Toast.show({
         type: 'success',
@@ -396,46 +395,46 @@ export default function SupplierProfileScreen() {
         </Card>
 
         {/* Balance Metric Summary Panel */}
-        <Card 
+        <Card
           style={[
-            styles.balanceCard, 
-            weOweThem 
+            styles.balanceCard,
+            weOweThem
               ? { backgroundColor: isDark ? 'rgba(103, 0, 27, 0.1)' : 'rgba(239, 68, 68, 0.1)', borderColor: isDark ? 'rgba(103, 0, 27, 0.2)' : 'rgba(239, 68, 68, 0.2)' }
-              : theyOweUs 
-              ? { backgroundColor: 'rgba(16, 185, 129, 0.1)', borderColor: 'rgba(16, 185, 129, 0.2)' } 
-              : { backgroundColor: colors.surface, borderColor: colors.border }
+              : theyOweUs
+                ? { backgroundColor: 'rgba(16, 185, 129, 0.1)', borderColor: 'rgba(16, 185, 129, 0.2)' }
+                : { backgroundColor: colors.surface, borderColor: colors.border }
           ]}
         >
           <Text style={[styles.balanceTitle, { color: colors.textMuted }]}>
             Net Balance
           </Text>
           <Text style={[
-            styles.balanceValue, 
+            styles.balanceValue,
             {
-              color: weOweThem 
-                ? colors.error 
-                : theyOweUs 
-                ? '#4edea3' 
-                : colors.textMuted
+              color: weOweThem
+                ? colors.error
+                : theyOweUs
+                  ? '#4edea3'
+                  : colors.textMuted
             }
           ]}>
             {formatCurrency(Math.abs(supplier.balance), currency)}
           </Text>
           <Text style={[
-            styles.balanceStatus, 
+            styles.balanceStatus,
             {
-              color: weOweThem 
-                ? colors.error 
-                : theyOweUs 
-                ? '#10b981' 
-                : colors.textMuted
+              color: weOweThem
+                ? colors.error
+                : theyOweUs
+                  ? '#10b981'
+                  : colors.textMuted
             }
           ]}>
-            {weOweThem 
-              ? 'You owe supplier (Payable)' 
-              : theyOweUs 
-              ? 'Supplier owes you (Receivable)' 
-              : 'All settled up!'}
+            {weOweThem
+              ? 'You owe supplier (Payable)'
+              : theyOweUs
+                ? 'Supplier owes you (Receivable)'
+                : 'All settled up!'}
           </Text>
         </Card>
 
@@ -483,7 +482,7 @@ export default function SupplierProfileScreen() {
                       </Text>
                     </View>
                   </View>
-                  
+
                   <View style={styles.txRight}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                       <Text style={[styles.txAmount, { color: isCredit ? colors.error : '#4edea3' }]}>
@@ -510,7 +509,7 @@ export default function SupplierProfileScreen() {
           onPress={() => handleOpenTransactionModal('credit')}
           style={[styles.actionBtn, styles.giveCreditBtn]}
         >
-          <Text style={styles.actionBtnText}>PURCHASE STOCK (Red)</Text>
+          <Text style={styles.actionBtnText}>PURCHASE STOCK</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -518,7 +517,7 @@ export default function SupplierProfileScreen() {
           onPress={() => handleOpenTransactionModal('debit')}
           style={[styles.actionBtn, styles.getPaymentBtn]}
         >
-          <Text style={styles.actionBtnText}>PAY SUPPLIER (Green)</Text>
+          <Text style={styles.actionBtnText}>PAY SUPPLIER</Text>
         </TouchableOpacity>
       </View>
 
@@ -529,12 +528,12 @@ export default function SupplierProfileScreen() {
         animationType="slide"
         onRequestClose={() => setModalVisible(false)}
       >
-        <TouchableOpacity 
+        <TouchableOpacity
           activeOpacity={1}
           style={styles.backdrop}
           onPress={() => setModalVisible(false)}
         >
-          <TouchableOpacity 
+          <TouchableOpacity
             activeOpacity={1}
             style={[styles.bottomSheet, { backgroundColor: isDark ? '#131313' : '#f8fafc', borderTopColor: colors.border }]}
           >
@@ -564,7 +563,7 @@ export default function SupplierProfileScreen() {
               placeholder="e.g. Purchased wholesale inventory"
             />
 
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => setShowDatePicker(true)}
               style={[styles.dateSelectorRow, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}
             >
@@ -600,12 +599,12 @@ export default function SupplierProfileScreen() {
         animationType="slide"
         onRequestClose={() => setEditModalVisible(false)}
       >
-        <TouchableOpacity 
+        <TouchableOpacity
           activeOpacity={1}
           style={styles.backdrop}
           onPress={() => setEditModalVisible(false)}
         >
-          <TouchableOpacity 
+          <TouchableOpacity
             activeOpacity={1}
             style={[styles.bottomSheet, { backgroundColor: isDark ? '#131313' : '#f8fafc', borderTopColor: colors.border }]}
           >
@@ -659,12 +658,12 @@ export default function SupplierProfileScreen() {
         animationType="slide"
         onRequestClose={() => setEditTxModalVisible(false)}
       >
-        <TouchableOpacity 
+        <TouchableOpacity
           activeOpacity={1}
           style={styles.backdrop}
           onPress={() => setEditTxModalVisible(false)}
         >
-          <TouchableOpacity 
+          <TouchableOpacity
             activeOpacity={1}
             style={[styles.bottomSheet, { backgroundColor: isDark ? '#131313' : '#f8fafc', borderTopColor: colors.border }]}
           >
@@ -714,7 +713,7 @@ export default function SupplierProfileScreen() {
               placeholder="e.g. Purchased wholesale inventory"
             />
 
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => setShowEditDatePicker(true)}
               style={[styles.dateSelectorRow, { backgroundColor: isDark ? '#171717' : '#f1f5f9', borderColor: colors.border }]}
             >
